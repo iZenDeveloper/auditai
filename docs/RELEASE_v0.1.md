@@ -379,17 +379,20 @@ Create `CHANGELOG.md`:
 
 Release is **done** when all of these are true:
 
-| # | Criterion |
-|---|-----------|
-| 1 | `main` on GitHub, public |
-| 2 | Annotated tag `v0.1.0` (+ optional floating `v0.1`) |
-| 3 | GitHub Release notes published |
-| 4 | Clean venv: `pip install git+…@v0.1.0` → `auditai --version` |
-| 5 | At least one successful Action run against the tagged ref |
-| 6 | README install + Action snippet use real `iZenDeveloper/auditai` |
-| 7 | No known secret in git history |
+| # | Criterion | Status (2026-07-11) |
+|---|-----------|---------------------|
+| 1 | `main` on GitHub, public | ✅ https://github.com/iZenDeveloper/auditai |
+| 2 | Annotated tag `v0.1.0` (+ floating `v0.1`) | ✅ |
+| 3 | GitHub Release notes published | ✅ https://github.com/iZenDeveloper/auditai/releases/tag/v0.1.0 |
+| 4 | Clean venv: `pip install git+…@v0.1.0` → `0.1.0` | ✅ verified |
+| 5 | Successful CI / Action e2e on GitHub | ✅ both workflows green |
+| 6 | README install + Action snippet use real `iZenDeveloper/auditai` | ✅ |
+| 7 | No known secret in git history | ✅ |
 
-**Not required for v0.1 Done:** PyPI, Marketplace badge, production cloud, 1000 stars.
+**v0.1.0 engineering release: DONE.**
+
+**Not required for v0.1 Done:** PyPI, Marketplace badge, production cloud, 1000 stars.  
+**Next track:** [GTM_v0.1.md](./GTM_v0.1.md)
 
 ---
 

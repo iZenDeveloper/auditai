@@ -1,17 +1,21 @@
 # AuditAI
 
+[![CI](https://github.com/iZenDeveloper/auditai/actions/workflows/ci.yml/badge.svg)](https://github.com/iZenDeveloper/auditai/actions/workflows/ci.yml)
+[![Action e2e](https://github.com/iZenDeveloper/auditai/actions/workflows/action-e2e.yml/badge.svg)](https://github.com/iZenDeveloper/auditai/actions/workflows/action-e2e.yml)
+[![Release](https://img.shields.io/github/v/release/iZenDeveloper/auditai)](https://github.com/iZenDeveloper/auditai/releases/latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 **Developer-first LLM/RAG safety audits for CI/CD.**
 
 Open-core CLI that scores **Faithfulness**, **Answer Relevancy**, and **Prompt Injection** resistance against your own API — with **BYOK** (bring your own OpenAI key). Designed to fail the build when quality drops.
 
 ```bash
-# from source (dev)
-pip install -e ".[pdf]"
+pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.0"
+# optional PDF certificates:
+# pip install "auditai[pdf] @ git+https://github.com/iZenDeveloper/auditai.git@v0.1.0"
 
-# or from release tag
-# pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.0"
-
-export OPENAI_API_KEY=sk-...   # for real judge; or judge.provider=mock
+export OPENAI_API_KEY=sk-...   # real judge; or set judge.provider=mock in YAML
+auditai init
 auditai run --config auditai.yml
 ```
 
@@ -26,10 +30,20 @@ auditai run --config auditai.yml
 
 ### 1. Install
 
+**Users (from release tag):**
+
 ```bash
+python -m venv .venv && source .venv/bin/activate
+pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.0"
+```
+
+**Contributors (from source):**
+
+```bash
+git clone https://github.com/iZenDeveloper/auditai.git
 cd auditai
 python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"
+pip install -e ".[dev,pdf]"
 ```
 
 ### 2. Scaffold config
@@ -225,7 +239,8 @@ pip install -e ".[deepeval]"
 - [x] Cloud API stub (ingest runs, project keys, SQLite)
 - [x] Next.js dashboard (history + sparklines + run detail)
 - [x] Compliance PDF certificate (CLI + Cloud API + dashboard)
-- [ ] Publish tagged release `v0.1` — see [docs/RELEASE_v0.1.md](docs/RELEASE_v0.1.md)
+- [x] Publish `v0.1.0` — https://github.com/iZenDeveloper/auditai/releases/tag/v0.1.0
+- [ ] Growth-hack: useful PRs to public RAG repos (see [docs/GTM_v0.1.md](docs/GTM_v0.1.md))
 - [ ] Postgres + multi-user auth for production cloud
 
 ## License
