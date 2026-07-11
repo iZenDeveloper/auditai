@@ -80,19 +80,42 @@ def _headers() -> dict[str, str]:
 
 
 def _get_json(url: str) -> dict[str, Any]:
-    ctx = ssl.create_default_context()
-    req = urllib.request.Request(url, headers=_headers())
+    """Fetch JSON; prefer curl (reliable certs on macOS), then urllib."""
+    # 1) curl
     try:
-        with urllib.request.urlopen(req, context=ctx, timeout=45) as resp:
-            return json.loads(resp.read().decode())
-    except urllib.error.HTTPError as e:
-        body = e.read().decode(errors="replace")[:300]
-        raise RuntimeError(f"HTTP {e.code}: {body}") from e
-    except ssl.SSLError:
-        # macOS python.org builds sometimes lack certs — fall back to unverified for scan only
-        ctx = ssl._create_unverified_context()  # noqa: S323
-        with urllib.request.urlopen(req, context=ctx, timeout=45) as resp:
-            return json.loads(resp.read().decode())
+        import shutil
+        import subprocess
+
+        if shutil.which("curl"):
+            cmd = [
+                "curl",
+                "-sS",
+                "-H",
+                "Accept: application/vnd.github+json",
+                "-H",
+                "User-Agent: auditai-gtm-scan",
+            ]
+            token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+            if token:
+                cmd += ["-H", f"Authorization: Bearer {token}"]
+            cmd.append(url)
+            out = subprocess.check_output(cmd, timeout=60)
+            return json.loads(out.decode())
+    except Exception:
+        pass
+
+    # 2) urllib with cert fallback
+    req = urllib.request.Request(url, headers=_headers())
+    for ctx in (ssl.create_default_context(), ssl._create_unverified_context()):  # noqa: S323
+        try:
+            with urllib.request.urlopen(req, context=ctx, timeout=45) as resp:
+                return json.loads(resp.read().decode())
+        except urllib.error.HTTPError as e:
+            body = e.read().decode(errors="replace")[:300]
+            raise RuntimeError(f"HTTP {e.code}: {body}") from e
+        except Exception:
+            continue
+    raise RuntimeError(f"failed to fetch {url}")
 
 
 def search_repos(query: str, per_page: int = 20) -> list[dict[str, Any]]:
