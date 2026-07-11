@@ -2,6 +2,9 @@
 
 Goal: first **10–50 developers** discover AuditAI through high-signal open-source PRs (no ads).
 
+> **Playbook 4 bước (chi tiết PRD):** [GROWTH_HACK.md](./gtm/GROWTH_HACK.md)  
+> Tools: `scripts/gtm/scan_github.py` · `guerrilla_prep.py` · `fill_pr_body.py` · `run_growth_hack.sh`
+
 ## Prerequisites (done)
 
 - [x] Public repo: https://github.com/iZenDeveloper/auditai

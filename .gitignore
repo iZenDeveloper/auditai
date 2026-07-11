@@ -22,3 +22,4 @@ cloud/dashboard/.env.local
 *.egg-info/
 .coverage
 htmlcov/
+docs/gtm/out/
