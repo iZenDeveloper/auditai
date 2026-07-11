@@ -44,6 +44,6 @@ Do not spam. Max 2–3 PRs/day. Track outcomes in the table at the bottom.
 |---|------|--------|--------|-------|
 | 1 | towardsai/ai-tutor-app | | draft ready | |
 | 2 | chatvector-ai/chatvector-ai | | | |
-| 3 | HiTrong/RAG-Student-Chatbot | | | |
+| 3 | HiTrong/RAG-Student-Chatbot | | **full draft** | [drafts/02-…](./drafts/02-hitrong-rag-student-chatbot/) mock smoke PASS |
 | 4 | HoangLeminh17/Chatbot_tuyen_sinh_FPTU_2026 | | | |
 | 5–10 | … | | | |
