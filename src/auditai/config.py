@@ -145,7 +145,7 @@ class AuditConfig(BaseModel):
 
     @model_validator(mode="after")
     def check_version_and_metrics(self) -> AuditConfig:
-        if self.version not in {"0.1", "0.1.0"}:
+        if self.version not in {"0.1", "0.1.0", "0.1.1"}:
             raise ValueError(f"unsupported config version: {self.version}")
         enabled = [
             self.metrics.faithfulness.enabled,
@@ -220,7 +220,7 @@ def ensure_judge_auth(cfg: AuditConfig) -> None:
         if not os.environ.get(env_name):
             hint = {
                 "openai": "Export OPENAI_API_KEY, or set judge.api_key_env / judge.base_url for a proxy.",
-                "xai": "Export XAI_API_KEY (https://console.x.ai/). Default model: grok-3-mini.",
+                "xai": "Export XAI_API_KEY (https://console.x.ai/). Default model: grok-4.3.",
             }.get(cfg.judge.provider, "")
             raise AuthError(
                 f"{env_name} is required for judge.provider={cfg.judge.provider} (BYOK). "
@@ -266,7 +266,7 @@ judge:
   # openai → OPENAI_API_KEY ; xai → XAI_API_KEY (base https://api.x.ai/v1)
   # Optional overrides: base_url, api_key_env (OpenAI-compatible proxies)
   provider: openai
-  model: "gpt-4o-mini"          # xai example: "grok-3-mini" or "grok-3"
+  model: "gpt-4o-mini"          # xai example: "grok-4.3" or "grok-3-mini"
   temperature: 0
   # base_url: "https://api.x.ai/v1"
   # api_key_env: "XAI_API_KEY"

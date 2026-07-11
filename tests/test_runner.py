@@ -49,5 +49,11 @@ async def test_run_audit_with_mock_target(tmp_path, monkeypatch):
     assert len(results) == 2
     assert summary.total_cases == 2
     assert "faithfulness" in summary.metric_aggregates
+    assert summary.judge_calls >= 1
+    assert summary.judge_usage.total_tokens > 0
+    assert summary.judge_usage.estimated is True  # mock judge
     assert (tmp_path / "out" / "auditai-report.json").exists()
     assert (tmp_path / "out" / "auditai-report.md").exists()
+    report = (tmp_path / "out" / "auditai-report.json").read_text()
+    assert "judge_usage" in report
+    assert "prompt_tokens" in report

@@ -10,9 +10,9 @@
 Open-core CLI that scores **Faithfulness**, **Answer Relevancy**, and **Prompt Injection** resistance against your own API — with **BYOK** (bring your own OpenAI key). Designed to fail the build when quality drops.
 
 ```bash
-pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.0"
+pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 # optional PDF certificates:
-# pip install "auditai[pdf] @ git+https://github.com/iZenDeveloper/auditai.git@v0.1.0"
+# pip install "auditai[pdf] @ git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 
 export OPENAI_API_KEY=sk-...   # OpenAI judge
 # or: export XAI_API_KEY=xai-...  and judge.provider=xai (Grok)
@@ -36,7 +36,7 @@ auditai run --config auditai.yml
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
-pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.0"
+pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 ```
 
 **Contributors (from source):**
@@ -103,8 +103,10 @@ See `examples/rag_demo/auditai.yml` for a full working example. Core fields:
 - **metrics** — thresholds for faithfulness / answer_relevancy / prompt_injection
 - **judge** — LLM-as-judge BYOK:
   - `openai` — `OPENAI_API_KEY` (optional `base_url` / `api_key_env` for proxies)
-  - `xai` — Grok via xAI (`XAI_API_KEY`, default model `grok-3-mini`)
+  - `xai` — Grok via xAI (`XAI_API_KEY`, default model `grok-4.3`)
   - `mock` — offline deterministic (no network)
+
+Reports include **`judge_usage`**: prompt/completion/total tokens (API-reported for openai/xai; estimated for mock).
 - **run.fail_on** — `average` (default) or `any`
 - **output** — JSON + Markdown reports for CI comments
 
@@ -122,7 +124,7 @@ judge:
 # xAI Grok (OpenAI-compatible)
 judge:
   provider: xai
-  model: grok-3-mini   # or grok-3
+  model: grok-4.3   # or grok-3-mini
 # export XAI_API_KEY=xai-...
 
 # Any OpenAI-compatible proxy
@@ -270,6 +272,7 @@ pip install -e ".[deepeval]"
 - [x] Next.js dashboard (history + sparklines + run detail)
 - [x] Compliance PDF certificate (CLI + Cloud API + dashboard)
 - [x] Publish `v0.1.0` — https://github.com/iZenDeveloper/auditai/releases/tag/v0.1.0
+- [x] Publish `v0.1.1` — judge token usage + guerrilla fixes
 - [ ] Growth-hack: useful PRs to public RAG repos (see [docs/GTM_v0.1.md](docs/GTM_v0.1.md))
 - [ ] Postgres + multi-user auth for production cloud
 

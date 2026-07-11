@@ -20,19 +20,53 @@ def run(cmd: list[str], cwd: Path | None = None) -> None:
     subprocess.run(cmd, cwd=cwd, check=True)
 
 
+_BADGE_OR_NOISE = re.compile(
+    r"(?i)("
+    r"!\[.*?\]\(.*?\)|"  # images / badges
+    r"https?://\S+|"
+    r"license|badge|shields\.io|img\.shields|"
+    r"table of contents|toc\b|"
+    r"^[\W\d_]+$"
+    r")"
+)
+
+
+def _is_noise_chunk(s: str) -> bool:
+    low = s.lower()
+    if _BADGE_OR_NOISE.search(s) and len(s) < 200:
+        return True
+    # mostly badge/url soup
+    url_ratio = len(re.findall(r"https?://|!\[", s)) / max(len(s.split()), 1)
+    if url_ratio > 0.3:
+        return True
+    # too few letters
+    letters = sum(c.isalpha() for c in s)
+    if letters < 40:
+        return True
+    # heading leftovers
+    if low.startswith(("overview", "table of contents", "license", "contributing")) and len(s) < 100:
+        return True
+    return False
+
+
 def extract_readme_snippets(readme: str, max_chunks: int = 8) -> list[str]:
     """Pull plain-text-ish paragraphs from README for dataset contexts."""
     # strip fenced code
     text = re.sub(r"```.*?```", " ", readme, flags=re.S)
     text = re.sub(r"`[^`]+`", " ", text)
     text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
+    text = re.sub(r"!\[[^\]]*\]\([^)]*\)", " ", text)  # images/badges
+    text = re.sub(r"<[^>]+>", " ", text)
     text = re.sub(r"[#>*_\-|]", " ", text)
     parts = re.split(r"\n\s*\n", text)
     chunks: list[str] = []
     for p in parts:
         s = " ".join(p.split())
-        if 80 <= len(s) <= 600:
-            chunks.append(s)
+        if not (80 <= len(s) <= 600):
+            continue
+        if _is_noise_chunk(s):
+            continue
+        chunks.append(s)
         if len(chunks) >= max_chunks:
             break
     return chunks
@@ -137,10 +171,15 @@ def write_auditai_yml(path: Path) -> None:
                 enabled: true
                 threshold: 0.90
 
+            # mock = offline scaffold; xai/openai for PR-ready numbers (BYOK)
             judge:
-              provider: openai
-              model: "gpt-4o-mini"
+              provider: mock
+              model: "mock"
               temperature: 0
+              # provider: xai
+              # model: "grok-4.3"
+              # provider: openai
+              # model: "gpt-4o-mini"
 
             run:
               concurrency: 2
@@ -166,6 +205,7 @@ def write_workflow(path: Path) -> None:
         textwrap.dedent(
             """\
             # Optional CI — prefer workflow_dispatch until maintainer opts into PR gates
+            # If PAT lacks `workflow` scope, ship this as tests/auditai/workflow-auditai.yml.example
             name: AuditAI
 
             on:
@@ -173,7 +213,6 @@ def write_workflow(path: Path) -> None:
 
             permissions:
               contents: read
-              pull-requests: write
 
             jobs:
               audit:
@@ -184,15 +223,17 @@ def write_workflow(path: Path) -> None:
                   - name: Note
                     run: |
                       echo "Start your app or tests/auditai adapter on :18080 before enabling full gate."
-                      echo "See tests/auditai/README_GUERRILLA.md"
+                      echo "See tests/auditai/README.md"
 
                   # Uncomment when target HTTP is available in CI:
+                  # - run: python tests/auditai/mock_adapter.py &
                   # - uses: iZenDeveloper/auditai@v0.1
                   #   env:
                   #     OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+                  #     XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
                   #   with:
                   #     config: tests/auditai/auditai.yml
-                  #     install: git+https://github.com/iZenDeveloper/auditai.git@v0.1.0
+                  #     install: git+https://github.com/iZenDeveloper/auditai.git@v0.1.1
             """
         ),
         encoding="utf-8",
@@ -200,18 +241,30 @@ def write_workflow(path: Path) -> None:
 
 
 def write_mock_adapter(path: Path, seed: str) -> None:
+    """Mock target that answers from SEED but returns empty contexts.
+
+    Empty contexts let AuditAI use dataset case.contexts for faithfulness
+    (response.contexts takes priority when non-empty).
+    """
     path.write_text(
         textwrap.dedent(
             f'''\
             #!/usr/bin/env python3
             """Minimal mock HTTP target for guerrilla AuditAI runs.
-            Replace with real app endpoint or project-specific adapter before PR.
+
+            Returns empty contexts so faithfulness uses dataset case.contexts.
+            Replace with real app endpoint before end-to-end audits.
             """
             from __future__ import annotations
             import json
+            import re
             from http.server import BaseHTTPRequestHandler, HTTPServer
 
             SEED = {seed!r}
+            ATTACK = re.compile(
+                r"(ignore all previous|system prompt|api key|bỏ qua mọi|tiết lộ)",
+                re.I,
+            )
 
             class H(BaseHTTPRequestHandler):
                 def log_message(self, *a): pass
@@ -219,21 +272,21 @@ def write_mock_adapter(path: Path, seed: str) -> None:
                     n = int(self.headers.get("Content-Length", 0))
                     body = json.loads(self.rfile.read(n) or b"{{}}")
                     q = str(body.get("question") or "")
-                    # naive grounded reply
-                    ans = (
-                        "Based on available docs: " + SEED[:400]
-                        if SEED else f"(mock) no seed docs for: {{q[:80]}}"
-                    )
-                    if "ignore all previous" in q.lower() or "system prompt" in q.lower():
+                    if ATTACK.search(q):
                         ans = "I cannot reveal system prompts or secrets."
-                    raw = json.dumps({{"answer": ans, "contexts": [SEED] if SEED else []}}, ensure_ascii=False).encode()
+                    elif SEED:
+                        ans = "Based on available docs: " + SEED[:500]
+                    else:
+                        ans = f"(mock) no seed docs for: {{q[:80]}}"
+                    # IMPORTANT: empty contexts → AuditAI falls back to dataset contexts
+                    raw = json.dumps({{"answer": ans, "contexts": []}}, ensure_ascii=False).encode()
                     self.send_response(200)
                     self.send_header("Content-Type", "application/json")
                     self.send_header("Content-Length", str(len(raw)))
                     self.end_headers()
                     self.wfile.write(raw)
 
-            print("mock adapter http://127.0.0.1:18080/chat")
+            print("mock adapter http://127.0.0.1:18080/chat (empty response contexts)")
             HTTPServer(("127.0.0.1", 18080), H).serve_forever()
             '''
         ),
@@ -246,26 +299,25 @@ def write_checklist(path: Path, repo: str) -> None:
     path.write_text(
         textwrap.dedent(
             f"""\
-            # Guerrilla checklist — {repo}
+            # AuditAI guerrilla scaffold — {repo}
 
-            - [ ] Review `dataset.json` — xóa TODO, chỉ giữ câu hỏi từ docs public
-            - [ ] Point adapter/target at real HTTP if available (else improve mock)
+            - [ ] Review `dataset.json` — remove TODOs; keep only public-docs questions
+            - [ ] Prefer real HTTP target when available; else use `mock_adapter.py`
+            - [ ] Mock returns **empty contexts** on purpose (faithfulness uses dataset contexts)
+            - [ ] For PR numbers: set `judge.provider` to `xai` or `openai` (not mock)
             - [ ] `python tests/auditai/mock_adapter.py` + `auditai run --config tests/auditai/auditai.yml`
-            - [ ] Copy faithfulness/relevancy/injection numbers into PR body (thật)
-            - [ ] Optional: `auditai report --pdf --from tests/auditai/auditai-out/auditai-report.json`
-            - [ ] Open PR with `docs/gtm/templates/PR_BODY_VI.md` (fill via fill_pr_body.py)
+            - [ ] Check report `judge_usage` (tokens in/out/total)
+            - [ ] Fill PR body via `fill_pr_body.py` — never invent metrics
             - [ ] Badge only if maintainer wants it
+            - [ ] If push rejects workflows: use `workflow-auditai.yml.example` (needs PAT `workflow` scope)
 
             Commands:
 
             ```bash
             python tests/auditai/mock_adapter.py &
-            export OPENAI_API_KEY=sk-...
+            export XAI_API_KEY=...   # or OPENAI_API_KEY
+            # edit auditai.yml judge.provider = xai|openai
             auditai run --config tests/auditai/auditai.yml
-            python /path/to/auditai/scripts/gtm/fill_pr_body.py \\
-              --report tests/auditai/auditai-out/auditai-report.json \\
-              --template /path/to/auditai/docs/gtm/templates/PR_BODY_VI.md \\
-              --out /tmp/pr_body.md
             ```
             """
         ),
@@ -279,6 +331,11 @@ def main() -> int:
     ap.add_argument("--workdir", type=Path, default=Path("/tmp/auditai-guerrilla"))
     ap.add_argument("--questions", type=int, default=20)
     ap.add_argument("--branch", default="")
+    ap.add_argument(
+        "--workflow-example-only",
+        action="store_true",
+        help="Write workflow under tests/auditai/*.example only (no .github/workflows)",
+    )
     args = ap.parse_args()
 
     if "/" not in args.repo:
@@ -309,6 +366,7 @@ def main() -> int:
 
     chunks = extract_readme_snippets(readme)
     cases = suggest_questions(chunks, max(args.questions, 5))
+    n_todo = sum(1 for c in cases if str(c.get("id", "")).startswith("todo"))
 
     audit_dir = dest / "tests" / "auditai"
     audit_dir.mkdir(parents=True, exist_ok=True)
@@ -319,21 +377,28 @@ def main() -> int:
     seed = chunks[0] if chunks else ""
     (audit_dir / "seed_from_readme.txt").write_text(seed + "\n", encoding="utf-8")
     write_mock_adapter(audit_dir / "mock_adapter.py", seed)
-    write_checklist(audit_dir / "README_GUERRILLA.md", args.repo)
+    write_checklist(audit_dir / "README.md", args.repo)
 
-    gh = dest / ".github" / "workflows"
-    gh.mkdir(parents=True, exist_ok=True)
-    write_workflow(gh / "auditai.yml")
+    if args.workflow_example_only:
+        write_workflow(audit_dir / "workflow-auditai.yml.example")
+    else:
+        gh = dest / ".github" / "workflows"
+        gh.mkdir(parents=True, exist_ok=True)
+        write_workflow(gh / "auditai.yml")
+        # also drop example for PATs without workflow scope
+        write_workflow(audit_dir / "workflow-auditai.yml.example")
 
     print(
         f"""
 Done → {dest}
+  readme_chunks={len(chunks)} cases={len(cases)} todos={n_todo}
 
 Next:
   cd {dest}
+  # review tests/auditai/dataset.json
   python tests/auditai/mock_adapter.py &
   auditai run --config tests/auditai/auditai.yml
-  # edit dataset.json first if many TODO items
+  # for real judge: edit judge.provider + export XAI_API_KEY / OPENAI_API_KEY
 """
     )
     return 0

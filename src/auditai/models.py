@@ -80,6 +80,18 @@ class TopFailure(BaseModel):
     reason: str | None = None
 
 
+class JudgeUsage(BaseModel):
+    """Aggregated LLM-as-judge token usage for one run."""
+
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
+    total_tokens: int = 0
+    # True when tokens are char-heuristic estimates (e.g. mock judge)
+    estimated: bool = False
+    provider: str = ""
+    model: str = ""
+
+
 class RunSummary(BaseModel):
     schema_version: str = "0.1"
     run_id: str
@@ -93,3 +105,4 @@ class RunSummary(BaseModel):
     exit_reason: str
     top_failures: list[TopFailure] = Field(default_factory=list)
     judge_calls: int = 0
+    judge_usage: JudgeUsage = Field(default_factory=JudgeUsage)

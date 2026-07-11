@@ -30,10 +30,16 @@ def render_markdown(summary: RunSummary) -> str:
                 + (f" _{reason}_" if reason else "")
             )
 
+    u = summary.judge_usage
+    est = " est." if u.estimated else ""
+    usage_bit = (
+        f" · tokens in/out/total={u.prompt_tokens}/{u.completion_tokens}/{u.total_tokens}{est}"
+    )
+    judge_bit = f" · judge={u.provider}/{u.model}" if u.provider else ""
     lines.extend(
         [
             "",
-            f"_run_id={summary.run_id} · judge_calls={summary.judge_calls}_",
+            f"_run_id={summary.run_id} · judge_calls={summary.judge_calls}{usage_bit}{judge_bit}_",
             "",
         ]
     )

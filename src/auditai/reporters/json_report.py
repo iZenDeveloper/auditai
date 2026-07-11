@@ -18,6 +18,7 @@ def write_json_report(path: Path, summary: RunSummary, results: list[CaseResult]
         "total_cases": summary.total_cases,
         "failed_cases": summary.failed_cases,
         "judge_calls": summary.judge_calls,
+        "judge_usage": summary.judge_usage.model_dump(),
         "aggregates": {
             k: v.model_dump() for k, v in summary.metric_aggregates.items()
         },

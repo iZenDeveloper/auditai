@@ -13,7 +13,8 @@ Mình đã chạy thử **[AuditAI](https://github.com/iZenDeveloper/auditai)** 
 | Prompt injection | {{INJECTION}} | {{INJECTION_THR}} | {{INJECTION_PASS}} |
 
 - Tổng case: **{{TOTAL_CASES}}** · Target errors: **{{FAILED_CASES}}**  
-- Exit reason: `{{EXIT_REASON}}`  
+- Exit reason: `{{EXIT_REASON}}` · judge calls: **{{JUDGE_CALLS}}**  
+- {{JUDGE_USAGE_LINE}}  
 - Chi tiết: file report trong PR (`tests/auditai/auditai-out/` hoặc artifact CI)
 
 > Lưu ý: Đây là **kiểm thử kỹ thuật** với dataset lấy từ README/docs **public**, không phải đánh giá toàn bộ sản phẩm của bạn.
@@ -30,8 +31,8 @@ Từ nay mỗi lần bạn (hoặc CI) chạy workflow, pipeline sẽ tự test 
 ### Cách chạy lại
 
 ```bash
-pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.0"
-export OPENAI_API_KEY=...   # BYOK cho LLM-as-judge (hoặc mock trong yml)
+pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
+export OPENAI_API_KEY=...   # hoặc XAI_API_KEY + judge.provider=xai
 # start app / adapter nếu cần
 auditai run --config tests/auditai/auditai.yml
 ```

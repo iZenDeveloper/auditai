@@ -17,6 +17,7 @@ from auditai.evaluators.registry import build_evaluators
 from auditai.judge.factory import create_judge
 from auditai.models import (
     CaseResult,
+    JudgeUsage,
     MetricAggregate,
     MetricScore,
     RunSummary,
@@ -93,15 +94,31 @@ async def run_audit(cfg: AuditConfig, *, base_dir: Path | None = None) -> tuple[
                 overall_passed=False,
                 exit_reason="target_unstable",
                 judge_calls=judge.call_count,
+                judge_usage=_judge_usage(judge),
             )
             _write_outputs(cfg, summary, results)
             _maybe_push_cloud(cfg, summary, results)
             return summary, results
 
-    summary = _finalize(cfg, results, started, judge.call_count)
+    summary = _finalize(cfg, results, started, judge)
     _write_outputs(cfg, summary, results)
     _maybe_push_cloud(cfg, summary, results)
     return summary, results
+
+
+def _judge_usage(judge: object) -> JudgeUsage:
+    snap = getattr(judge, "usage_snapshot", None)
+    if callable(snap):
+        return snap()
+    return JudgeUsage(
+        prompt_tokens=int(getattr(judge, "prompt_tokens", 0) or 0),
+        completion_tokens=int(getattr(judge, "completion_tokens", 0) or 0),
+        total_tokens=int(getattr(judge, "prompt_tokens", 0) or 0)
+        + int(getattr(judge, "completion_tokens", 0) or 0),
+        estimated=getattr(judge, "provider", "") == "mock",
+        provider=str(getattr(judge, "provider", "") or ""),
+        model=str(getattr(judge, "model", "") or ""),
+    )
 
 
 def _maybe_push_cloud(cfg: AuditConfig, summary: RunSummary, results: list[CaseResult]) -> None:
@@ -115,7 +132,7 @@ def _finalize(
     cfg: AuditConfig,
     results: list[CaseResult],
     started: datetime,
-    judge_calls: int,
+    judge: object,
 ) -> RunSummary:
     aggregates = _aggregate(cfg, results)
     overall, reason = _pass_fail(cfg, results, aggregates)
@@ -125,7 +142,8 @@ def _finalize(
         started,
         overall_passed=overall,
         exit_reason=reason,
-        judge_calls=judge_calls,
+        judge_calls=int(getattr(judge, "call_count", 0) or 0),
+        judge_usage=_judge_usage(judge),
         aggregates=aggregates,
     )
 
@@ -256,6 +274,7 @@ def _build_summary(
     overall_passed: bool,
     exit_reason: str,
     judge_calls: int,
+    judge_usage: JudgeUsage | None = None,
     aggregates: dict[str, MetricAggregate] | None = None,
 ) -> RunSummary:
     if aggregates is None:
@@ -273,6 +292,7 @@ def _build_summary(
         exit_reason=exit_reason,
         top_failures=_top_failures(results, cfg.output.top_failures),
         judge_calls=judge_calls,
+        judge_usage=judge_usage or JudgeUsage(),
     )
 
 

@@ -2,11 +2,26 @@
 
 All notable changes to AuditAI are documented in this file.
 
+## [0.1.1] - 2026-07-11
+
+### Added
+
+- **Judge token usage** in run reports: `judge_usage.prompt_tokens` / `completion_tokens` / `total_tokens` (API-reported for OpenAI/xAI; estimated for mock)
+- Terminal + Markdown report lines for tokens; cloud payload includes `judge_usage`
+- Guerrilla prep: README noise filter (badges/URLs), mock adapter returns **empty contexts**, `--workflow-example-only`, default `judge: mock`
+- `fill_pr_body.py`: token/judge placeholders + auto mock-judge disclaimer
+- Model-not-found hint on xAI/OpenAI judge errors
+
+### Changed
+
+- Default xAI model → `grok-4.3` (override in YAML; `grok-3-mini` still valid when set explicitly)
+- Package version `0.1.1`
+
 ## [Unreleased]
 
 ### Added
 
-- **xAI / Grok judge** (`judge.provider: xai`) — BYOK via `XAI_API_KEY`, default model `grok-3-mini`, base URL `https://api.x.ai/v1`
+- **xAI / Grok judge** (`judge.provider: xai`) — BYOK via `XAI_API_KEY`, base URL `https://api.x.ai/v1`
 - OpenAI-compatible overrides on judge: `base_url`, `api_key_env` (proxies / OpenRouter-style gateways)
 - Example: `examples/xai_judge/auditai.yml`
 

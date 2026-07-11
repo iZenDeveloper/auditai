@@ -71,6 +71,7 @@ def build_payload(
         "total_cases": summary.total_cases,
         "failed_cases": summary.failed_cases,
         "judge_calls": summary.judge_calls,
+        "judge_usage": summary.judge_usage.model_dump(),
         "aggregates": aggregates,
         "top_failures": top,
         "metadata": _ci_metadata(),

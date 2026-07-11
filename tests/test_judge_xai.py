@@ -38,7 +38,7 @@ def test_xai_resolve_defaults(monkeypatch):
     assert provider == "xai"
     assert key == "xai-test"
     assert base_url == "https://api.x.ai/v1"
-    assert model == "grok-3-mini"
+    assert model == "grok-4.3"
 
 
 def test_xai_explicit_model(monkeypatch):
@@ -87,11 +87,14 @@ def test_custom_api_key_env(monkeypatch):
 
 def test_create_judge_xai(monkeypatch):
     monkeypatch.setenv("XAI_API_KEY", "xai-test")
-    judge = create_judge(JudgeConfig(provider="xai", model="grok-3-mini"))
+    judge = create_judge(JudgeConfig(provider="xai", model="grok-4.3"))
     assert isinstance(judge, OpenAIJudge)
     assert judge.provider == "xai"
-    assert judge.model == "grok-3-mini"
+    assert judge.model == "grok-4.3"
     assert judge._base_url == "https://api.x.ai/v1"
+    snap = judge.usage_snapshot()
+    assert snap.total_tokens == 0
+    assert snap.estimated is False
 
 
 def test_missing_key_raises_judge_error(monkeypatch):

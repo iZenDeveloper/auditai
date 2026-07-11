@@ -31,7 +31,12 @@ def print_summary(summary: RunSummary) -> None:
         )
 
     console.print(table)
+    u = summary.judge_usage
+    est = " (est.)" if u.estimated else ""
     console.print(
         f"cases={summary.total_cases} target_errors={summary.failed_cases} "
-        f"judge_calls={summary.judge_calls}"
+        f"judge_calls={summary.judge_calls} "
+        f"tokens_in={u.prompt_tokens} tokens_out={u.completion_tokens} "
+        f"tokens_total={u.total_tokens}{est}"
+        + (f" · {u.provider}/{u.model}" if u.provider else "")
     )

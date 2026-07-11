@@ -33,6 +33,9 @@ class CertificateData:
     total_cases: int = 0
     failed_cases: int = 0
     judge_calls: int = 0
+    judge_prompt_tokens: int = 0
+    judge_completion_tokens: int = 0
+    judge_total_tokens: int = 0
     client_run_id: str | None = None
     git_sha: str | None = None
     git_ref: str | None = None
@@ -90,6 +93,9 @@ def certificate_from_report_json(
         total_cases=int(data.get("total_cases") or 0),
         failed_cases=int(data.get("failed_cases") or 0),
         judge_calls=int(data.get("judge_calls") or 0),
+        judge_prompt_tokens=int((data.get("judge_usage") or {}).get("prompt_tokens") or 0),
+        judge_completion_tokens=int((data.get("judge_usage") or {}).get("completion_tokens") or 0),
+        judge_total_tokens=int((data.get("judge_usage") or {}).get("total_tokens") or 0),
         client_run_id=data.get("client_run_id") or data.get("run_id"),
         git_sha=meta.get("git_sha") or data.get("git_sha"),
         git_ref=meta.get("git_ref") or data.get("git_ref"),
@@ -187,7 +193,13 @@ def build_compliance_pdf(cert: CertificateData) -> bytes:
     )
     line(f"Exit reason: {cert.exit_reason or '-'}")
     line(
-        f"Cases: {cert.total_cases} total / {cert.failed_cases} target errors / {cert.judge_calls} judge calls"
+        f"Cases: {cert.total_cases} total / {cert.failed_cases} target errors / "
+        f"{cert.judge_calls} judge calls"
+        + (
+            f" / {cert.judge_total_tokens} judge tokens"
+            if cert.judge_total_tokens
+            else ""
+        )
     )
     if cert.repo:
         line(f"Repository: {cert.repo}")

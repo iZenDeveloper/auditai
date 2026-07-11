@@ -42,6 +42,20 @@ def main() -> int:
     r_m, r_t, r_p = metric("answer_relevancy")
     i_m, i_t, i_p = metric("prompt_injection")
 
+    usage = data.get("judge_usage") or {}
+    provider = usage.get("provider") or "—"
+    model = usage.get("model") or "—"
+    tok_in = usage.get("prompt_tokens")
+    tok_out = usage.get("completion_tokens")
+    tok_total = usage.get("total_tokens")
+    est = " (est.)" if usage.get("estimated") else ""
+    usage_line = (
+        f"Judge: **{provider}/{model}** · "
+        f"tokens in/out/total = **{tok_in}/{tok_out}/{tok_total}**{est}"
+        if usage
+        else ""
+    )
+
     body = args.template.read_text(encoding="utf-8")
     repl = {
         "{{FAITHFULNESS}}": f_m,
@@ -56,9 +70,23 @@ def main() -> int:
         "{{TOTAL_CASES}}": str(data.get("total_cases", "—")),
         "{{FAILED_CASES}}": str(data.get("failed_cases", "—")),
         "{{EXIT_REASON}}": str(data.get("exit_reason", "—")),
+        "{{JUDGE_CALLS}}": str(data.get("judge_calls", "—")),
+        "{{JUDGE_PROVIDER}}": str(provider),
+        "{{JUDGE_MODEL}}": str(model),
+        "{{TOKENS_IN}}": str(tok_in if tok_in is not None else "—"),
+        "{{TOKENS_OUT}}": str(tok_out if tok_out is not None else "—"),
+        "{{TOKENS_TOTAL}}": str(tok_total if tok_total is not None else "—"),
+        "{{JUDGE_USAGE_LINE}}": usage_line,
     }
     for k, v in repl.items():
         body = body.replace(k, v)
+
+    # Auto disclaimer for mock judge scores
+    if provider == "mock" and "mock judge" not in body.lower():
+        body += (
+            "\n\n> **Note:** baseline used `judge.provider=mock` (offline). "
+            "Re-run with `openai` or `xai` for LLM-as-judge numbers before citing as production evidence.\n"
+        )
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(body, encoding="utf-8")

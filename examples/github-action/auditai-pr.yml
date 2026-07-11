@@ -47,5 +47,5 @@ jobs:
           working-directory: .
           comment-on-pr: "true"
           upload-artifact: "true"
-          # install: git+https://github.com/iZenDeveloper/auditai.git@v0.1.0
+          # install: git+https://github.com/iZenDeveloper/auditai.git@v0.1.1
           # fail-on: average
