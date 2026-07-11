@@ -1,0 +1,63 @@
+# Optional — copy to .github/workflows/auditai.yml
+# Manual only: free GitHub runners cannot host Vinallama GGUF realistically.
+name: AuditAI smoke (mock adapter)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-mock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install AuditAI
+        run: |
+          python -m pip install -U pip
+          pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.0"
+
+      - name: Start mock HTTP adapter
+        run: |
+          mkdir -p scripts tests/auditai
+          # Expect files already in tree after PR merge; paths match draft layout
+          nohup python scripts/auditai_http_adapter.py > /tmp/adapter.log 2>&1 &
+          echo $! > /tmp/adapter.pid
+          for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:18080/health >/dev/null; then
+              echo "adapter ready"
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/adapter.log
+          exit 1
+        env:
+          AUDITAI_ADAPTER_MODE: mock
+
+      - name: Run AuditAI (mock judge — free)
+        run: |
+          # Override judge to mock so CI needs no OpenAI key
+          # If auditai.yml already uses mock, this is a no-op path.
+          auditai run --config tests/auditai/auditai.yml
+        env:
+          AUDITAI_ADAPTER_MODE: mock
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: auditai-out
+          path: tests/auditai/auditai-out/
+          if-no-files-found: warn
+
+      - name: Stop adapter
+        if: always()
+        run: |
+          if [ -f /tmp/adapter.pid ]; then kill "$(cat /tmp/adapter.pid)" || true; fi

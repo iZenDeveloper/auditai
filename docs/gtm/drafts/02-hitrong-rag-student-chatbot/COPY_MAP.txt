@@ -1,0 +1,9 @@
+Copy these files into a fork of HiTrong/RAG-Student-Chatbot:
+
+  auditai.yml              -> tests/auditai/auditai.yml
+  dataset.json             -> tests/auditai/dataset.json
+  seed_tma_context.txt     -> tests/auditai/seed_tma_context.txt
+  auditai_http_adapter.py  -> scripts/auditai_http_adapter.py
+  workflow-auditai.yml     -> .github/workflows/auditai.yml
+
+Then open PR with body from PR_BODY.md

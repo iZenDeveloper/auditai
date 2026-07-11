@@ -1,0 +1,5 @@
+# Public context excerpt used in upstream README as the "right information" example.
+# Source: HiTrong/RAG-Student-Chatbot README.md (public).
+# For AuditAI faithfulness checks / optional seed document only.
+
+Được thành lập năm 1997, TMA là công ty phần mềm hàng đầu Việt Nam với hơn 3,000 kỹ sư. TMA có 6 văn phòng tại TP.HCM, Công viên Sáng tạo TMA tại Bình Định và 6 văn phòng tại nước ngoài (Canada, Mỹ, Đức, Úc, Nhật Bản và Singapore). Với sự phát triển vững mạnh 24 năm qua, TMA tự hào nhận được sự tin tưởng của khách hàng là những tập đoàn lớn đến từ 30 quốc gia trên thế giới. TMA nhiều năm liền vinh dự được bình chọn trong top doanh nghiệp CNTT Việt Nam, liên tục được vinh danh trong top 10 doanh nghiệp xuất khẩu phần mềm, Top 10 doanh nghiệp Fintech, Top 10 doanh nghiệp AI – IoT…

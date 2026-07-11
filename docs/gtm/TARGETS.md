@@ -17,7 +17,7 @@ Do not spam. Max 2–3 PRs/day. Track outcomes in the table at the bottom.
 
 | # | Repo | Stars | Why | Fit notes | Priority |
 |---|------|------:|----|-----------|----------|
-| 6 | [HiTrong/RAG-Student-Chatbot](https://github.com/HiTrong/RAG-Student-Chatbot) | ~2 | Chatbot SV VN, RAG vs hallucination **đã nêu trong README** | Streamlit + local GGUF; adapter HTTP | P0 VN |
+| 6 | [HiTrong/RAG-Student-Chatbot](https://github.com/HiTrong/RAG-Student-Chatbot) | ~2 | Chatbot SV VN, RAG vs hallucination **đã nêu trong README** | **Full draft ready** | P0 VN |
 | 7 | [HoangLeminh17/Chatbot_tuyen_sinh_FPTU_2026](https://github.com/HoangLeminh17/Chatbot_tuyen_sinh_FPTU_2026) | ~1 | RAG tuyển sinh FPT, MIT, data public | CLI app — add FastAPI thin wrap for CI | P0 VN |
 | 8 | [ngothanhnam0910/Vietnamese-Law-Question-Answering-system](https://github.com/ngothanhnam0910/Vietnamese-Law-Question-Answering-system) | ~56 | Q&A pháp lý VN | License unclear; check before PR | P1 VN |
 | 9 | [Trinhvhao/TalentBridge](https://github.com/Trinhvhao/TalentBridge) | ~12 | LangChain + FastAPI, SV VN | Job matching > pure RAG chat; still LLM quality gate | P2 |

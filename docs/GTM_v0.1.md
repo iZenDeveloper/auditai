@@ -87,7 +87,7 @@ Full target list: [gtm/TARGETS.md](./gtm/TARGETS.md)
 |---|------|-----|--------|-------|
 | 1 | towardsai/ai-tutor-app | | draft ready | [drafts/01-…](./gtm/drafts/01-towardsai-ai-tutor-app/) |
 | 2 | chatvector-ai/chatvector-ai | | queued | JSON `/chat` |
-| 3 | HiTrong/RAG-Student-Chatbot | | draft body | [02-…](./gtm/drafts/02-hitrong-rag-student-chatbot/) VN |
+| 3 | HiTrong/RAG-Student-Chatbot | | **full draft** | [02-…](./gtm/drafts/02-hitrong-rag-student-chatbot/) · mock PASS |
 | 4–10 | see TARGETS.md | | | |
 
 ## Success criteria (2 weeks)
