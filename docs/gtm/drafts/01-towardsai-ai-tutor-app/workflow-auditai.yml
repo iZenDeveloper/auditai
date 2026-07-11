@@ -1,0 +1,31 @@
+# Optional — place at .github/workflows/auditai.yml
+# Manual only to avoid unexpected LLM spend on every PR.
+name: AuditAI smoke (optional)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Maintainers: start your API + adapter before this step
+      # (document in job summary / use a composite setup script).
+      - name: Note
+        run: |
+          echo "This workflow is a stub. Wire API + adapter startup before enabling."
+          echo "See tests/auditai/ and scripts/auditai_chat_adapter.py"
+
+      # Example once services are up:
+      # - uses: iZenDeveloper/auditai@v0.1
+      #   env:
+      #     OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      #   with:
+      #     config: tests/auditai/auditai.yml
+      #     install: git+https://github.com/iZenDeveloper/auditai.git@v0.1.0
+      #     comment-on-pr: "false"
