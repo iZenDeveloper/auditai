@@ -44,6 +44,15 @@ def log(msg: str) -> None:
     print(msg, flush=True)
 
 
+def _redact(s: str) -> str:
+    """Strip secrets from log lines (tokens embedded in git remote URLs, etc.)."""
+    s = re.sub(r"x-access-token:[^@\s]+@", "x-access-token:***@", s)
+    s = re.sub(r"ghp_[A-Za-z0-9]{20,}", "ghp_***", s)
+    s = re.sub(r"github_pat_[A-Za-z0-9_]{20,}", "github_pat_***", s)
+    s = re.sub(r"\beyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9._-]+\b", "eyJ***", s)
+    return s
+
+
 def run(
     cmd: list[str],
     *,
@@ -52,7 +61,7 @@ def run(
     check: bool = True,
     capture: bool = False,
 ) -> subprocess.CompletedProcess[str]:
-    log("+ " + " ".join(cmd))
+    log("+ " + _redact(" ".join(cmd)))
     merged = os.environ.copy()
     if env:
         merged.update(env)
@@ -275,14 +284,26 @@ def ensure_fork(upstream: str, fork_owner: str, name: str) -> str:
     raise StepError(f"fork not visible yet: {fork}")
 
 
-def git_https_with_token(url_or_slug: str, token: str) -> str:
+def git_https_public(url_or_slug: str) -> str:
+    """Public HTTPS remote (no token in URL — auth via GH_TOKEN/gh/git credential)."""
     if url_or_slug.startswith("https://github.com/"):
         path = url_or_slug.removeprefix("https://github.com/").removesuffix(".git")
     elif "/" in url_or_slug and not url_or_slug.startswith("git@"):
         path = url_or_slug
     else:
         path = url_or_slug
-    return f"https://x-access-token:{token}@github.com/{path}.git"
+    return f"https://github.com/{path}.git"
+
+
+def configure_git_auth(token: str) -> None:
+    """Prefer gh as git credential helper so remotes never embed PATs."""
+    if shutil.which("gh"):
+        run(["gh", "auth", "setup-git"], check=False, capture=True)
+    # Fallback env for git/https (not logged)
+    os.environ.setdefault("GIT_TERMINAL_PROMPT", "0")
+    # Some git builds honor this when using https://github.com/ without helper
+    os.environ["GH_TOKEN"] = token
+    os.environ["GITHUB_TOKEN"] = token
 
 
 def select_commit_files(clone: Path, workflow_example_only: bool) -> list[Path]:
@@ -474,11 +495,12 @@ def main() -> int:
                 return 2
 
         fork = ensure_fork(args.repo, me, name)
+        configure_git_auth(token)
         log(f"== git branch {args.branch} ==")
-        # remotes
+        # remotes — never put PAT in the remote URL (leaks via logs / git config)
         run(["git", "remote", "remove", "fork"], cwd=clone, check=False, capture=True)
         run(
-            ["git", "remote", "add", "fork", git_https_with_token(fork, token)],
+            ["git", "remote", "add", "fork", git_https_public(fork)],
             cwd=clone,
             check=False,
         )
@@ -489,7 +511,7 @@ def main() -> int:
                 "remote",
                 "set-url",
                 "origin",
-                f"https://github.com/{args.repo}.git",
+                git_https_public(args.repo),
             ],
             cwd=clone,
             check=False,
