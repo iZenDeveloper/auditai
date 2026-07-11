@@ -2,6 +2,18 @@
 
 All notable changes to AuditAI are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- **xAI / Grok judge** (`judge.provider: xai`) — BYOK via `XAI_API_KEY`, default model `grok-3-mini`, base URL `https://api.x.ai/v1`
+- OpenAI-compatible overrides on judge: `base_url`, `api_key_env` (proxies / OpenRouter-style gateways)
+- Example: `examples/xai_judge/auditai.yml`
+
+### Changed
+
+- `OpenAIJudge` is the shared OpenAI-compatible client for both `openai` and `xai`
+
 ## [0.1.0] - 2026-07-11
 
 First public open-core release.
@@ -31,11 +43,12 @@ pip install "auditai[pdf] @ git+https://github.com/iZenDeveloper/auditai.git@v0.
 - uses: iZenDeveloper/auditai@v0.1
   env:
     OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    # or XAI_API_KEY when judge.provider=xai
 ```
 
 ### Known limitations
 
-- Judge providers: OpenAI + mock only (no Anthropic yet)
+- Judge providers: OpenAI, xAI/Grok, mock (Anthropic reserved, not implemented)
 - Cloud: SQLite, single project key auth, no multi-user billing
 - Compliance PDF is **not** a government licence or legal opinion
 - PyPI package name may be reserved — primary install path is git tag

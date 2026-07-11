@@ -10,10 +10,11 @@ from auditai.judge.openai_judge import OpenAIJudge
 def create_judge(config: JudgeConfig) -> Judge:
     if config.provider == "mock":
         return MockJudge(config)
-    if config.provider == "openai":
+    if config.provider in ("openai", "xai"):
         return OpenAIJudge(config)
     if config.provider == "anthropic":
         raise ConfigError(
-            "judge.provider=anthropic is reserved for a later release; use openai or mock"
+            "judge.provider=anthropic is reserved for a later release; "
+            "use openai, xai (Grok), or mock"
         )
     raise ConfigError(f"unknown judge provider: {config.provider}")

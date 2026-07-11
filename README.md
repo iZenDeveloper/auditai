@@ -14,7 +14,9 @@ pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.0"
 # optional PDF certificates:
 # pip install "auditai[pdf] @ git+https://github.com/iZenDeveloper/auditai.git@v0.1.0"
 
-export OPENAI_API_KEY=sk-...   # real judge; or set judge.provider=mock in YAML
+export OPENAI_API_KEY=sk-...   # OpenAI judge
+# or: export XAI_API_KEY=xai-...  and judge.provider=xai (Grok)
+# or: judge.provider=mock for offline demos
 auditai init
 auditai run --config auditai.yml
 ```
@@ -99,11 +101,39 @@ See `examples/rag_demo/auditai.yml` for a full working example. Core fields:
 - **target** — HTTP endpoint, body template, response map (`answer`, `contexts`)
 - **dataset** — path to JSON / JSONL / CSV
 - **metrics** — thresholds for faithfulness / answer_relevancy / prompt_injection
-- **judge** — `openai` (BYOK via `OPENAI_API_KEY`) or `mock` (offline)
+- **judge** — LLM-as-judge BYOK:
+  - `openai` — `OPENAI_API_KEY` (optional `base_url` / `api_key_env` for proxies)
+  - `xai` — Grok via xAI (`XAI_API_KEY`, default model `grok-3-mini`)
+  - `mock` — offline deterministic (no network)
 - **run.fail_on** — `average` (default) or `any`
 - **output** — JSON + Markdown reports for CI comments
 
 Env expansion: `${VAR}` and `${VAR:-default}` in config strings.
+
+### Judge: OpenAI vs Grok (xAI)
+
+```yaml
+# OpenAI
+judge:
+  provider: openai
+  model: gpt-4o-mini
+# export OPENAI_API_KEY=sk-...
+
+# xAI Grok (OpenAI-compatible)
+judge:
+  provider: xai
+  model: grok-3-mini   # or grok-3
+# export XAI_API_KEY=xai-...
+
+# Any OpenAI-compatible proxy
+judge:
+  provider: openai
+  model: my-model
+  base_url: https://proxy.example/v1
+  api_key_env: MY_API_KEY
+```
+
+Example config: [`examples/xai_judge/auditai.yml`](examples/xai_judge/auditai.yml).
 
 ## GitHub Action
 
@@ -170,7 +200,7 @@ GitLab CI sample: [`examples/github-action/gitlab-ci.yml`](examples/github-actio
 
 ```
 Customer CI / laptop
-  Code + dataset + OPENAI_API_KEY
+  Code + dataset + OPENAI_API_KEY or XAI_API_KEY
        → AuditAI CLI → User RAG API + Judge API
        → report.json / report.md / exit code
        → (optional) POST metrics → AuditAI Cloud API

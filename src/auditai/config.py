@@ -75,11 +75,24 @@ class MetricsConfig(BaseModel):
 
 
 class JudgeConfig(BaseModel):
-    provider: Literal["openai", "anthropic", "mock"] = "openai"
+    """LLM-as-judge settings (BYOK).
+
+    Providers:
+      - openai — OpenAI API (`OPENAI_API_KEY`); optional custom base_url for proxies
+      - xai    — xAI Grok (`XAI_API_KEY`, default base https://api.x.ai/v1)
+      - mock   — offline deterministic judge (no network)
+      - anthropic — reserved (not implemented in v0.1)
+    """
+
+    provider: Literal["openai", "xai", "anthropic", "mock"] = "openai"
     model: str = "gpt-4o-mini"
     temperature: float = 0.0
     max_retries: int = 2
     timeout_seconds: float = 90.0
+    # OpenAI-compatible overrides (optional). For provider=xai, base_url defaults to api.x.ai.
+    base_url: str | None = None
+    # Env var name holding the API key (default: OPENAI_API_KEY or XAI_API_KEY by provider).
+    api_key_env: str | None = None
 
 
 class RunConfig(BaseModel):
@@ -178,20 +191,42 @@ def load_config(path: str | Path) -> AuditConfig:
     return cfg
 
 
+def _judge_api_key_env(cfg: JudgeConfig) -> str:
+    if cfg.api_key_env:
+        return cfg.api_key_env.strip()
+    if cfg.provider == "xai":
+        return "XAI_API_KEY"
+    if cfg.provider == "anthropic":
+        return "ANTHROPIC_API_KEY"
+    return "OPENAI_API_KEY"
+
+
 def ensure_judge_auth(cfg: AuditConfig) -> None:
     import os
 
     if cfg.judge.provider == "mock":
         return
-    if cfg.judge.provider == "openai":
-        if not os.environ.get("OPENAI_API_KEY"):
+    if cfg.judge.provider == "anthropic":
+        # Still reserved at runtime; fail early with clear key message if someone sets it.
+        env_name = _judge_api_key_env(cfg.judge)
+        if not os.environ.get(env_name):
             raise AuthError(
-                "OPENAI_API_KEY is required for judge.provider=openai (BYOK). "
-                "Export it or use judge.provider=mock for local dry demos."
+                f"{env_name} is required for judge.provider=anthropic "
+                "(provider not implemented yet — use openai, xai, or mock)."
             )
-    elif cfg.judge.provider == "anthropic":
-        if not os.environ.get("ANTHROPIC_API_KEY"):
-            raise AuthError("ANTHROPIC_API_KEY is required for judge.provider=anthropic")
+        return
+    if cfg.judge.provider in ("openai", "xai"):
+        env_name = _judge_api_key_env(cfg.judge)
+        if not os.environ.get(env_name):
+            hint = {
+                "openai": "Export OPENAI_API_KEY, or set judge.api_key_env / judge.base_url for a proxy.",
+                "xai": "Export XAI_API_KEY (https://console.x.ai/). Default model: grok-3-mini.",
+            }.get(cfg.judge.provider, "")
+            raise AuthError(
+                f"{env_name} is required for judge.provider={cfg.judge.provider} (BYOK). "
+                f"{hint} Or use judge.provider=mock for local dry demos."
+            )
+        return
 
 
 def config_to_init_yaml() -> str:
@@ -227,10 +262,15 @@ metrics:
     threshold: 0.90
 
 judge:
-  # Use "mock" for offline demos; "openai" for real LLM-as-judge (BYOK)
+  # Providers: openai | xai (Grok) | mock
+  # openai → OPENAI_API_KEY ; xai → XAI_API_KEY (base https://api.x.ai/v1)
+  # Optional overrides: base_url, api_key_env (OpenAI-compatible proxies)
   provider: openai
-  model: "gpt-4o-mini"
+  model: "gpt-4o-mini"          # xai example: "grok-3-mini" or "grok-3"
   temperature: 0
+  # base_url: "https://api.x.ai/v1"
+  # api_key_env: "XAI_API_KEY"
+
 
 run:
   concurrency: 3

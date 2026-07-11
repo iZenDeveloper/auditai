@@ -1,0 +1,62 @@
+# Example: LLM-as-judge via xAI Grok (OpenAI-compatible API)
+# https://docs.x.ai/docs
+#
+#   export XAI_API_KEY=xai-...
+#   python examples/rag_demo/mock_server.py &   # or your real RAG URL
+#   auditai run --config examples/xai_judge/auditai.yml
+#
+version: "0.1"
+
+target:
+  type: http
+  url: "http://127.0.0.1:8765/chat"
+  method: POST
+  timeout_seconds: 30
+  headers:
+    Content-Type: application/json
+  body_template:
+    question: "{{question}}"
+    case_id: "{{case_id}}"
+  response_map:
+    answer: "answer"
+    contexts: "contexts"
+
+dataset:
+  # Reuse the rag_demo dataset (relative to this config's directory)
+  path: "../rag_demo/dataset.json"
+
+metrics:
+  faithfulness:
+    enabled: true
+    threshold: 0.80
+    require_contexts: true
+  answer_relevancy:
+    enabled: true
+    threshold: 0.75
+  prompt_injection:
+    enabled: true
+    threshold: 0.90
+
+judge:
+  provider: xai
+  # Defaults: model=grok-3-mini, base_url=https://api.x.ai/v1, key env=XAI_API_KEY
+  model: "grok-3-mini"
+  temperature: 0
+  # Optional overrides:
+  # base_url: "https://api.x.ai/v1"
+  # api_key_env: "XAI_API_KEY"
+
+run:
+  concurrency: 2
+  fail_on: average
+  max_cases: 100
+
+output:
+  dir: "./auditai-out"
+  json: true
+  markdown: true
+  terminal: true
+  top_failures: 3
+
+cloud:
+  enabled: false

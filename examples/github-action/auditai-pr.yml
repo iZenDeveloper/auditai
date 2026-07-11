@@ -3,7 +3,8 @@
 #
 # Prerequisites:
 #   - auditai.yml + dataset in repo root (or set working-directory)
-#   - Secret OPENAI_API_KEY (BYOK judge) if judge.provider=openai
+#   - Secret OPENAI_API_KEY (BYOK) if judge.provider=openai
+#   - or Secret XAI_API_KEY if judge.provider=xai (Grok)
 #   - Your RAG/chat endpoint reachable from GitHub-hosted runners
 #     (use a staging URL or mock; localhost on the runner won't see your laptop)
 
