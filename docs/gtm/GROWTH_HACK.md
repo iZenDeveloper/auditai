@@ -110,6 +110,25 @@ Mở PR (sau khi fork + push branch):
 gh pr create --title "ci: add AuditAI RAG quality gate (optional)" --body-file /tmp/pr_body.md
 ```
 
+### One-shot (khuyến nghị)
+
+```bash
+export GITHUB_TOKEN="$(tr -d ' \n' < ~/.config/github_token)"
+# optional real judge:
+# export XAI_API_KEY=...
+
+# dry-run: prep + audit + pr_body (không push)
+./scripts/gtm/run_growth_hack.sh --open-pr owner/name --judge mock --dry-run
+
+# full: fork + push + gh pr create + log docs/gtm/out/pr_log.jsonl
+./scripts/gtm/run_growth_hack.sh --open-pr owner/name --judge xai --model grok-4.3 --yes
+
+# hoặc gọi Python trực tiếp
+python scripts/gtm/open_guerrilla_pr.py --repo owner/name --judge openai --yes
+```
+
+Flags hữu ích: `--skip-prep`, `--skip-audit`, `--workflow-example-only` / `--no-workflow-example-only`, `--branch`, `--title`.
+
 ---
 
 ## Bước 4 — Viral loop (badge)
