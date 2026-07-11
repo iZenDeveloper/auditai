@@ -73,12 +73,13 @@ auditai report --pdf \
 `guerrilla_prep.py` sẽ:
 
 1. `git clone --depth 1` public repo.  
-2. Đọc README, trích đoạn text.  
-3. Sinh skeleton `dataset.json` (~20 slots + vài câu injection + gợi ý từ README).  
-4. Sinh `auditai.yml` + `.github/workflows/auditai.yml` + adapter mock tối thiểu.  
-5. In checklist “cần sửa tay trước khi PR”.
+2. Đọc **README + docs/**/*.md**, trích đoạn prose/table (lọc badge/noise).  
+3. Sinh `dataset.json` từ docs thật (mặc định **0 TODO**; `--pad-todos` nếu cần legacy).  
+4. Nhiều câu hỏi / chunk (templates EN/VI) + 2 probe injection.  
+5. Sinh `auditai.yml` + workflow example + **mock adapter yếu** (một SEED — không greenwash).  
+6. In checklist; expect **FAIL** với LLM judge + mock target.
 
-**Quan trọng:** Điểm Faithfulness trong PR **phải lấy từ report thật** sau `auditai run`, không bịa số.
+**Quan trọng:** Điểm Faithfulness trong PR **phải lấy từ report thật** sau `auditai run`, không bịa số. Mock “thông minh” để điểm xanh = greenwash — **không làm**.
 
 ---
 
