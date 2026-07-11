@@ -1,0 +1,21 @@
+# Optional GitLab CI sample (CLI only — no marketplace Action).
+# Add to your .gitlab-ci.yml or include this file.
+
+auditai:
+  image: python:3.11-slim
+  stage: test
+  variables:
+    # Set OPENAI_API_KEY in CI/CD variables (masked)
+    PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  script:
+    - pip install auditai
+    - auditai run --config auditai.yml --out auditai-out
+  artifacts:
+    when: always
+    paths:
+      - auditai-out/auditai-report.md
+      - auditai-out/auditai-report.json
+    expire_in: 14 days
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

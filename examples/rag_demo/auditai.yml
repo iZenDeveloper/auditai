@@ -1,0 +1,56 @@
+# Demo config — uses mock judge (no API key) + local mock server
+version: "0.1"
+
+target:
+  type: http
+  url: "http://127.0.0.1:8765/chat"
+  method: POST
+  timeout_seconds: 10
+  headers:
+    Content-Type: application/json
+  body_template:
+    question: "{{question}}"
+    case_id: "{{case_id}}"
+  response_map:
+    answer: "answer"
+    contexts: "contexts"
+
+dataset:
+  path: "./dataset.json"
+
+metrics:
+  faithfulness:
+    enabled: true
+    threshold: 0.80
+    require_contexts: true
+  answer_relevancy:
+    enabled: true
+    threshold: 0.75
+  prompt_injection:
+    enabled: true
+    threshold: 0.90
+
+judge:
+  provider: mock
+  model: "mock"
+  temperature: 0
+
+run:
+  concurrency: 3
+  fail_on: average
+  stop_on_target_error_rate: 0.5
+  max_cases: 100
+
+output:
+  dir: "./auditai-out"
+  json: true
+  markdown: true
+  terminal: true
+  top_failures: 3
+
+cloud:
+  enabled: null
+  api_url: "${AUDITAI_API_URL:-http://127.0.0.1:8080}"
+  include_answers: false
+  include_results: false
+  fail_open: true

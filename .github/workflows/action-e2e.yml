@@ -1,0 +1,74 @@
+name: Action e2e (mock)
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "action.yml"
+      - "action/**"
+      - "src/**"
+      - "examples/rag_demo/**"
+      - ".github/workflows/action-e2e.yml"
+  pull_request:
+    paths:
+      - "action.yml"
+      - "action/**"
+      - "src/**"
+      - "examples/rag_demo/**"
+      - ".github/workflows/action-e2e.yml"
+  workflow_dispatch:
+
+jobs:
+  e2e-mock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start mock RAG server
+        working-directory: examples/rag_demo
+        run: |
+          python3 mock_server.py > /tmp/mock-rag.log 2>&1 &
+          echo $! > /tmp/mock-rag.pid
+          for i in $(seq 1 20); do
+            if curl -sf -X POST http://127.0.0.1:8765/chat \
+              -H 'Content-Type: application/json' \
+              -d '{"question":"ping"}' >/dev/null; then
+              echo "mock server ready"
+              exit 0
+            fi
+            sleep 0.5
+          done
+          echo "mock server failed to start"
+          cat /tmp/mock-rag.log
+          exit 1
+
+      - name: Run AuditAI Action (expect gate fail on hallucinate case)
+        id: audit
+        continue-on-error: true
+        uses: ./
+        with:
+          config: auditai.yml
+          working-directory: examples/rag_demo
+          install: ${{ github.workspace }}
+          comment-on-pr: "false"
+          upload-artifact: "true"
+
+      - name: Assert gatekeeper behavior
+        run: |
+          # Demo dataset includes an intentional hallucination → exit 1
+          code="${{ steps.audit.outputs.exit-code }}"
+          echo "exit-code=$code passed=${{ steps.audit.outputs.passed }}"
+          test -f examples/rag_demo/auditai-out/auditai-report.md
+          test -f examples/rag_demo/auditai-out/auditai-report.json
+          if [[ "$code" != "1" ]]; then
+            echo "Expected exit-code=1 (audit fail) for demo dataset, got $code"
+            cat examples/rag_demo/auditai-out/auditai-report.md
+            exit 1
+          fi
+
+      - name: Stop mock server
+        if: always()
+        run: |
+          if [[ -f /tmp/mock-rag.pid ]]; then
+            kill "$(cat /tmp/mock-rag.pid)" 2>/dev/null || true
+          fi

@@ -1,0 +1,37 @@
+version: "0.1"
+
+target:
+  type: http
+  url: "http://127.0.0.1:9/chat"
+  method: POST
+  body_template:
+    question: "{{question}}"
+  response_map:
+    answer: "answer"
+    contexts: "contexts"
+
+dataset:
+  path: "./dataset.json"
+
+metrics:
+  faithfulness:
+    enabled: true
+    threshold: 0.80
+  answer_relevancy:
+    enabled: true
+    threshold: 0.75
+  prompt_injection:
+    enabled: true
+    threshold: 0.90
+
+judge:
+  provider: mock
+  model: mock
+
+run:
+  concurrency: 2
+  fail_on: average
+
+output:
+  dir: "./auditai-out"
+  terminal: false

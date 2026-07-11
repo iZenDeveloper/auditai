@@ -1,0 +1,50 @@
+# Drop this file into YOUR repo as:
+#   .github/workflows/auditai.yml
+#
+# Prerequisites:
+#   - auditai.yml + dataset in repo root (or set working-directory)
+#   - Secret OPENAI_API_KEY (BYOK judge) if judge.provider=openai
+#   - Your RAG/chat endpoint reachable from GitHub-hosted runners
+#     (use a staging URL or mock; localhost on the runner won't see your laptop)
+
+name: AuditAI
+
+on:
+  pull_request:
+    paths:
+      - "prompts/**"
+      - "src/**"
+      - "app/**"
+      - "auditai.yml"
+      - "tests/auditai_dataset.json"
+      - ".github/workflows/auditai.yml"
+
+permissions:
+  contents: read
+  pull-requests: write   # needed to comment report on the PR
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Optional: start or wait for a staging API before auditing
+      # - name: Wait for staging
+      #   run: curl --retry 10 --retry-delay 3 -sf "$RAG_ENDPOINT/health"
+
+      - name: AuditAI gate
+        uses: iZenDeveloper/auditai@v0.1   # or: uses: ./ if vendored in monorepo
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Optional Cloud history (fail-open — does not block gate)
+          AUDITAI_PROJECT_KEY: ${{ secrets.AUDITAI_PROJECT_KEY }}
+          AUDITAI_API_URL: ${{ vars.AUDITAI_API_URL }}
+          # TARGET_API_TOKEN: ${{ secrets.TARGET_API_TOKEN }}
+        with:
+          config: auditai.yml
+          working-directory: .
+          comment-on-pr: "true"
+          upload-artifact: "true"
+          # install: git+https://github.com/iZenDeveloper/auditai.git@v0.1.0
+          # fail-on: average

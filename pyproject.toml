@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "auditai"
+version = "0.1.0"
+description = "Developer-first LLM/RAG safety audits for CI/CD"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "AuditAI" }]
+keywords = ["llm", "rag", "ci", "evaluation", "deepeval", "safety"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = [
+  "typer>=0.12",
+  "pydantic>=2.6",
+  "httpx>=0.27",
+  "pyyaml>=6.0",
+  "rich>=13.7",
+  "openai>=1.40",
+]
+
+[project.optional-dependencies]
+deepeval = ["deepeval>=1.0"]
+pdf = ["fpdf2>=2.7"]
+dev = [
+  "pytest>=8.0",
+  "pytest-asyncio>=0.23",
+  "respx>=0.21",
+  "fpdf2>=2.7",
+]
+
+[project.scripts]
+auditai = "auditai.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/iZenDeveloper/auditai"
+Documentation = "https://github.com/iZenDeveloper/auditai#readme"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/auditai"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src/auditai" = "auditai"
+
+[tool.hatch.build]
+include = ["src/auditai/fonts/*.ttf"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/auditai", "README.md", "LICENSE", "examples", "tests"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
