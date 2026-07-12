@@ -1,5 +1,7 @@
 # Chiến lược Growth Hack qua Pull Request
 
+**Tiến độ hiện tại:** [`STATUS.md`](./STATUS.md) · log: [`out/pr_log.jsonl`](./out/pr_log.jsonl)
+
 Cách tìm **1,000 user đầu tiên** không tốn quảng cáo — đúng playbook PRD v2.0.
 
 | Bước | Việc | Tool trong repo |
