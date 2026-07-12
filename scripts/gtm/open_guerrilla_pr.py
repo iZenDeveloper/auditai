@@ -225,6 +225,23 @@ def patch_judge_yml(yml_path: Path, provider: str, model: str | None) -> None:
     yml_path.write_text("\n".join(out) + "\n", encoding="utf-8")
 
 
+def prepare_yml_for_commit(yml_path: Path) -> None:
+    """Reset committed config to safe defaults (mock judge + env-based target URL).
+
+    Local audit may use xai/openai, but the PR must not hard-default external APIs.
+    """
+    text = yml_path.read_text(encoding="utf-8")
+    # target URL → env override
+    text = re.sub(
+        r'(?m)^(\s*url:\s*)"[^"]*"',
+        r'\1"${AUDITAI_TARGET_URL:-http://127.0.0.1:18080/chat}"',
+        text,
+        count=1,
+    )
+    yml_path.write_text(text, encoding="utf-8")
+    patch_judge_yml(yml_path, "mock", "mock")
+
+
 def default_model(provider: str) -> str:
     if provider == "xai":
         return "grok-4.3"
@@ -482,6 +499,9 @@ def main() -> int:
                 }
             )
             return 0
+
+        # Never commit live judge keys/provider used for baseline (opt-in mock for PR)
+        prepare_yml_for_commit(yml)
 
         if not args.yes:
             log(f"About to fork/push/open PR against {args.repo} as {me}")

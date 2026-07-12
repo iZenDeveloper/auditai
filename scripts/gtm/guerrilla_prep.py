@@ -295,7 +295,8 @@ def write_auditai_yml(path: Path) -> None:
 
             target:
               type: http
-              url: "http://127.0.0.1:18080/chat"
+              # Override for real API: export AUDITAI_TARGET_URL=https://...
+              url: "${AUDITAI_TARGET_URL:-http://127.0.0.1:18080/chat}"
               method: POST
               timeout_seconds: 120
               headers:
@@ -321,7 +322,8 @@ def write_auditai_yml(path: Path) -> None:
                 enabled: true
                 threshold: 0.90
 
-            # mock = offline scaffold; xai/openai for PR-ready numbers (BYOK)
+            # Default mock = offline, no external API.
+            # Opt-in real judge: set provider to xai|openai + export key (BYOK).
             # Mock adapter is intentionally weak (SEED summary) — do not treat
             # mock+green scores as product quality. Prefer real target + real judge.
             judge:

@@ -52,3 +52,27 @@ def test_default_model():
     assert mod.default_model("xai") == "grok-4.3"
     assert mod.default_model("openai") == "gpt-4o-mini"
     assert mod.default_model("mock") == "mock"
+
+
+def test_prepare_yml_for_commit_resets_judge(tmp_path: Path):
+    yml = tmp_path / "auditai.yml"
+    yml.write_text(
+        """version: "0.1"
+target:
+  type: http
+  url: "http://127.0.0.1:18080/chat"
+judge:
+  provider: xai
+  model: "grok-4.3"
+run:
+  concurrency: 2
+""",
+        encoding="utf-8",
+    )
+    mod.prepare_yml_for_commit(yml)
+    text = yml.read_text(encoding="utf-8")
+    assert "provider: mock" in text
+    assert 'model: "mock"' in text
+    assert "AUDITAI_TARGET_URL" in text
+    assert "provider: xai" not in text or text.count("provider: xai") == 0
+
