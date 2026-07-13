@@ -1,6 +1,7 @@
 # GTM / project status — AuditAI
 
-**Snapshot:** 2026-07-12  
+**Snapshot:** 2026-07-12 (live re-check via GitHub API)  
+**Last synced:** 2026-07-12  
 **Owner account:** [iZenDeveloper](https://github.com/iZenDeveloper)  
 **Product repo:** https://github.com/iZenDeveloper/auditai  
 
@@ -14,8 +15,8 @@ Machine log: [`out/pr_log.jsonl`](./out/pr_log.jsonl).
 | Item | Status |
 |------|--------|
 | Public repo | https://github.com/iZenDeveloper/auditai |
-| Stars / forks | 0 / 0 *(update live on GitHub)* |
-| Releases | **v0.1.0**, **v0.1.1** (latest); floating tag `v0.1` → v0.1.1 |
+| Stars / forks | **0 / 0** (API live) |
+| Releases | **v0.1.0**, **v0.1.1** (latest, 2026-07-11); floating tag `v0.1` → v0.1.1 |
 | CLI | `auditai run` / `validate` / `init` / `report --pdf` |
 | Judge BYOK | `openai` · `xai` (Grok) · `mock` |
 | Reports | JSON / Markdown / terminal · **`judge_usage`** tokens (v0.1.1) |
@@ -28,6 +29,7 @@ Machine log: [`out/pr_log.jsonl`](./out/pr_log.jsonl).
 - v0.1.0 — open-core CLI + Action + cloud stub  
 - v0.1.1 — judge token usage, xAI judge, guerrilla prep improvements  
 - One-shot `open_guerrilla_pr.py` · no PAT in git remotes · commit **mock judge** + `AUDITAI_TARGET_URL` by default  
+- Pipeline fix: never commit live `xai`/`openai` judge defaults into guerrilla PRs  
 
 Install:
 
@@ -41,15 +43,15 @@ pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 
 **Rules:** public repos only · docs-public datasets · honest metrics (no greenwash) · ~2–3 quality PRs/day · badge only if maintainer opts in.
 
-| # | Target | PR | State | Baseline metrics | Notes |
-|---|--------|-----|-------|------------------|-------|
-| 1 | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#25](https://github.com/qtuanph/chatbot-rag/pull/25) | OPEN | PASS (older mock-judge run) | Follow-up posted; Vercel bot only; URL env fix pushed |
-| 2 | [ducdanh2304/vietnam-labor-law-rag](https://github.com/ducdanh2304/vietnam-labor-law-rag) | [#1](https://github.com/ducdanh2304/vietnam-labor-law-rag/pull/1) | OPEN | FAIL (Grok) | Honest fail; follow-up; mock default fix |
-| 3 | [tontide1/Traffic-law-chatbot](https://github.com/tontide1/Traffic-law-chatbot) | [#9](https://github.com/tontide1/Traffic-law-chatbot/pull/9) | OPEN | FAIL (Grok) | Sourcery review → fixed URL/env + mock default + reply |
-| 4 | [BIN9721/Chatbot](https://github.com/BIN9721/Chatbot) | [#1](https://github.com/BIN9721/Chatbot/pull/1) | OPEN | FAIL (Grok) · 0 TODO dataset | Follow-up; mock default fix |
-| 5 | [quyen244/SimpleRAG](https://github.com/quyen244/SimpleRAG) | [#1](https://github.com/quyen244/SimpleRAG/pull/1) | OPEN | FAIL (Grok) · 0 TODO dataset | Newest; mock + `AUDITAI_TARGET_URL` in commit |
+| # | Target | PR | State | Merged | Baseline | Maintainer (human) | Notes |
+|---|--------|-----|-------|:------:|----------|--------------------|-------|
+| 1 | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#25](https://github.com/qtuanph/chatbot-rag/pull/25) | **OPEN** | no | PASS (older mock-judge) | **none** | Follow-up + URL env fix; Vercel bot only |
+| 2 | [ducdanh2304/vietnam-labor-law-rag](https://github.com/ducdanh2304/vietnam-labor-law-rag) | [#1](https://github.com/ducdanh2304/vietnam-labor-law-rag/pull/1) | **OPEN** | no | FAIL (Grok) | **none** | Follow-up; mock default fix |
+| 3 | [tontide1/Traffic-law-chatbot](https://github.com/tontide1/Traffic-law-chatbot) | [#9](https://github.com/tontide1/Traffic-law-chatbot/pull/9) | **OPEN** | no | FAIL (Grok) | **none** | Sourcery bot review → fixed + reply |
+| 4 | [BIN9721/Chatbot](https://github.com/BIN9721/Chatbot) | [#1](https://github.com/BIN9721/Chatbot/pull/1) | **OPEN** | no | FAIL (Grok) · 0 TODO | **none** | Follow-up; mock default fix |
+| 5 | [quyen244/SimpleRAG](https://github.com/quyen244/SimpleRAG) | [#1](https://github.com/quyen244/SimpleRAG/pull/1) | **OPEN** | no | FAIL (Grok) · 0 TODO | **none** | Newest; mock + `AUDITAI_TARGET_URL` committed; **follow-up still pending** |
 
-### KPI snapshot (2026-07-12)
+### KPI snapshot (live 2026-07-12)
 
 | KPI | Current | Early target (see GROWTH_HACK) |
 |-----|--------:|--------------------------------|
@@ -60,6 +62,8 @@ pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 | Follow-ups sent | **4/5** (SimpleRAG pending T+2–3d) | — |
 
 **Bottleneck:** maintainer response rate — not missing CLI features.
+
+**Cadence note:** Pause opening new PRs for a few days; do not re-ping PRs that already have a follow-up for ≥5–7 days.
 
 ---
 
@@ -76,6 +80,7 @@ pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 | Drafts | `docs/gtm/drafts/` | HiTrong, towardsai (not all shipped as PRs yet) |
 | Targets list | [`TARGETS.md`](./TARGETS.md) | Priority A/B |
 | Playbook | [`GROWTH_HACK.md`](./GROWTH_HACK.md) | 4-step viral PR loop |
+| This status | [`STATUS.md`](./STATUS.md) | Human-readable dashboard |
 
 ### One-shot usage
 
@@ -129,5 +134,6 @@ export GITHUB_TOKEN="$(tr -d ' \n' < ~/.config/github_token)"
 | Date | Change |
 |------|--------|
 | 2026-07-12 | Initial export from session progress review |
+| 2026-07-12 | Live re-sync: 5 OPEN, 0 merge, 0 human maintainer replies; stars 0 |
 
-*Refresh metrics/PR states with `gh pr view` before major decisions.*
+*Refresh with `gh pr view` / `gh repo view` before major decisions.*
