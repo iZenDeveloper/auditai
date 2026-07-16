@@ -27,7 +27,8 @@ Machine log: [`out/pr_log.jsonl`](./out/pr_log.jsonl) (gitignored under `out/`).
 Install:
 
 ```bash
-pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
+pip install auditai                    # PyPI (after first upload — see docs/PYPI.md)
+# pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"  # fallback
 ```
 
 ---
@@ -112,9 +113,10 @@ pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 | Priority | Item |
 |:--------:|------|
 | **P0** | Watch #25 reopen/merge + #26 review |
-| **P0** | STATUS/log hygiene (this sync) ✓ |
+| **P0** | STATUS/log hygiene ✓ · LFS harden ✓ |
+| **P0** | **PyPI:** packaging ready · need Trusted Publisher or `~/.config/pypi_token` → see [`docs/PYPI.md`](../PYPI.md) |
 | Wait | No spam follow-up on 2026-07-16 batch |
-| P1 | PyPI publish (install friction) |
+| P1 | After PyPI live: verify `pip install auditai`; refresh open PR comments if useful |
 | P1 | First merge → badge + case study |
 | P1 | Selective follow-up on ≥5–7 day open PRs only |
 | P2 | GTVT only if license clarified |
@@ -140,5 +142,6 @@ pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 | 2026-07-16 | 8 PRs; #25 CLOSED + qtuanph reply |
 | 2026-07-16 | +#9–14 viparse…banhmi |
 | 2026-07-16 | **Full sync #1–17** + #26; LFS harden; anime logged |
+| 2026-07-16 | PyPI prep: wheel smoke 0.1.1, `publish-pypi.yml`, `docs/PYPI.md`, install docs → `pip install auditai` |
 
 *Refresh with `gh pr view` / search before major decisions.*

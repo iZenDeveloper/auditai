@@ -3,6 +3,7 @@
 [![CI](https://github.com/iZenDeveloper/auditai/actions/workflows/ci.yml/badge.svg)](https://github.com/iZenDeveloper/auditai/actions/workflows/ci.yml)
 [![Action e2e](https://github.com/iZenDeveloper/auditai/actions/workflows/action-e2e.yml/badge.svg)](https://github.com/iZenDeveloper/auditai/actions/workflows/action-e2e.yml)
 [![Release](https://img.shields.io/github/v/release/iZenDeveloper/auditai)](https://github.com/iZenDeveloper/auditai/releases/latest)
+[![PyPI](https://img.shields.io/pypi/v/auditai)](https://pypi.org/project/auditai/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 **Developer-first LLM/RAG safety audits for CI/CD.**
@@ -10,9 +11,10 @@
 Open-core CLI that scores **Faithfulness**, **Answer Relevancy**, and **Prompt Injection** resistance against your own API — with **BYOK** (bring your own OpenAI key). Designed to fail the build when quality drops.
 
 ```bash
-pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
-# optional PDF certificates:
-# pip install "auditai[pdf] @ git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
+pip install auditai
+# optional PDF certificates:  pip install "auditai[pdf]"
+# fallback (pre-PyPI / dev pin):
+#   pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 
 export OPENAI_API_KEY=sk-...   # OpenAI judge
 # or: export XAI_API_KEY=xai-...  and judge.provider=xai (Grok)
@@ -32,10 +34,17 @@ auditai run --config auditai.yml
 
 ### 1. Install
 
-**Users (from release tag):**
+**Users (PyPI):**
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
+pip install auditai
+# or: pip install "auditai[pdf]"
+```
+
+**Pin from GitHub (optional):**
+
+```bash
 pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 ```
 
