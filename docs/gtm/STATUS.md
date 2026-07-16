@@ -1,7 +1,7 @@
 # GTM / project status — AuditAI
 
-**Snapshot:** 2026-07-16 (STATUS + LFS hygiene)  
-**Last synced:** 2026-07-16  
+**Snapshot:** 2026-07-17 (first merge)  
+**Last synced:** 2026-07-17  
 **Owner account:** [iZenDeveloper](https://github.com/iZenDeveloper)  
 **Product repo:** https://github.com/iZenDeveloper/auditai  
 
@@ -39,8 +39,8 @@ pip install auditai                    # PyPI (after first upload — see docs/P
 
 | # | Target | PR | State | Baseline | Maintainer | Notes |
 |---|--------|-----|-------|----------|------------|-------|
-| 1 | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#25](https://github.com/qtuanph/chatbot-rag/pull/25) | **CLOSED** (not merged) | PASS (mock cũ) | **qtuanph — positive** (2026-07-16) | Reopen/merge tip + hybrid help offered |
-| 1b | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#26](https://github.com/qtuanph/chatbot-rag/pull/26) | OPEN | n/a (Recall@k) | — | Offline retrieval harness |
+| 1 | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#25](https://github.com/qtuanph/chatbot-rag/pull/25) | **MERGED** 2026-07-16 | PASS (mock cũ) | **qtuanph — positive + merge** | First guerrilla merge · thank-you posted |
+| 1b | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#26](https://github.com/qtuanph/chatbot-rag/pull/26) | **CLOSED** (not merged) | n/a (Recall@k) | **qtuanph — positive** (“merging right away”) | Reopen→Merge tip posted 2026-07-17 |
 | 2 | [vietnam-labor-law-rag](https://github.com/ducdanh2304/vietnam-labor-law-rag) | [#1](https://github.com/ducdanh2304/vietnam-labor-law-rag/pull/1) | OPEN | FAIL Grok | none | Follow-up done |
 | 3 | [Traffic-law-chatbot](https://github.com/tontide1/Traffic-law-chatbot) | [#9](https://github.com/tontide1/Traffic-law-chatbot/pull/9) | OPEN | FAIL Grok | none (Sourcery) | Follow-up done |
 | 4 | [BIN9721/Chatbot](https://github.com/BIN9721/Chatbot) | [#1](https://github.com/BIN9721/Chatbot/pull/1) | OPEN | FAIL Grok | none | Follow-up done |
@@ -58,21 +58,20 @@ pip install auditai                    # PyPI (after first upload — see docs/P
 | 16 | [hybrid-search-eval](https://github.com/kunal4040/hybrid-search-eval) | [#1](https://github.com/kunal4040/hybrid-search-eval/pull/1) | OPEN | FAIL Grok | none | eval-adjacent target |
 | 17 | [Agentic-RAG-Anime-…](https://github.com/drae1712/Agentic-RAG-Anime-Recommender-System) | [#1](https://github.com/drae1712/Agentic-RAG-Anime-Recommender-System/pull/1) | OPEN | FAIL Grok | none | git-lfs; finished after LFS-off |
 
-### KPI snapshot (2026-07-16)
+### KPI snapshot (2026-07-17)
 
 | KPI | Current | Early target |
 |-----|--------:|--------------|
-| Quality-gate PRs opened | **16** (+#26 harness; +#25 closed) | ≥10 ✓ |
-| Open quality-gate | **16** | — |
-| Open related (#26) | **1** | — |
-| Closed not merged | **1** (#25) | — |
-| Merged | **0** | ≥1–3 |
-| Human maintainer replies | **1** (qtuanph) | ≥3 |
-| AuditAI stars | **0** | after merge/badge |
-| Follow-ups (older set) | **8/8** | no same-day re-ping on 07-16 batch |
+| Quality-gate PRs opened | **16** (+#26 harness) | ≥10 ✓ |
+| Open quality-gate | **~15** | — |
+| **Merged** | **1** (#25) | ≥1–3 ✓ first |
+| Closed not merged | **1** (#26) | — |
+| Human maintainer replies | **1** (qtuanph · 2 PRs) | ≥3 |
+| AuditAI stars | **0** | after badge / social proof |
+| Follow-ups (older set) | **8/8** | no spam on 07-16 batch |
 
-**Milestone:** portfolio ≥16 + first positive human reply.  
-**Bottleneck:** conversion (merge), not volume.
+**Milestone:** **first merge** — AuditAI quality-gate on [qtuanph/chatbot-rag#25](https://github.com/qtuanph/chatbot-rag/pull/25).  
+**Next conversion:** #26 reopen/merge; then badge opt-in + case study.
 
 ---
 
@@ -85,15 +84,9 @@ pip install auditai                    # PyPI (after first upload — see docs/P
 | One-shot | `scripts/gtm/open_guerrilla_pr.py` |
 | PR body | `scripts/gtm/fill_pr_body.py` |
 | Playbook | [`GROWTH_HACK.md`](./GROWTH_HACK.md) · [`TARGETS.md`](./TARGETS.md) |
+| PyPI | [`docs/PYPI.md`](../PYPI.md) · `publish-pypi.yml` |
 
-**Script harden**
-
-| Fix | Why |
-|-----|-----|
-| `git add -f` | Repos that gitignore `tests/` |
-| Auto default branch | `main` vs `master` (e.g. banhmi) |
-| **LFS-off** (`GIT_LFS_SKIP_SMUDGE` + `filter.lfs.*=`) | Missing `git-lfs` binary (e.g. Anime) |
-| No PAT in remotes | Secret hygiene |
+**Script harden:** `git add -f` · default branch · LFS-off · no PAT in remotes.
 
 ---
 
@@ -112,15 +105,14 @@ pip install auditai                    # PyPI (after first upload — see docs/P
 
 | Priority | Item |
 |:--------:|------|
-| **P0** | Watch #25 reopen/merge + #26 review |
-| **P0** | STATUS/log hygiene ✓ · LFS harden ✓ |
-| **P0** | **PyPI:** packaging ready · need Trusted Publisher or `~/.config/pypi_token` → see [`docs/PYPI.md`](../PYPI.md) |
-| Wait | No spam follow-up on 2026-07-16 batch |
-| P1 | After PyPI live: verify `pip install auditai`; refresh open PR comments if useful |
-| P1 | First merge → badge + case study |
-| P1 | Selective follow-up on ≥5–7 day open PRs only |
-| P2 | GTVT only if license clarified |
-| P2 | About/topics on auditai |
+| **P0** | **#25 MERGED** ✓ · thank-you posted |
+| **P0** | Watch **#26** after reopen tip (posted) |
+| **P0** | **PyPI** upload still needs token / Trusted Publisher |
+| P1 | Case study / README “Used by chatbot-rag” after #26 or badge |
+| P1 | Optional badge on chatbot-rag (maintainer opt-in only) |
+| Wait | No spam follow-up on 2026-07-16 OPEN batch |
+| P1 | Selective follow-up on older OPEN after ≥5–7 days |
+| P2 | About/topics on auditai · GTVT if license OK |
 
 ---
 
@@ -129,8 +121,8 @@ pip install auditai                    # PyPI (after first upload — see docs/P
 | Layer | /10 | Note |
 |-------|----:|------|
 | Product build | 8 | v0.1.x shippable · tests green |
-| GTM execution | 8 | 16 PRs + tooling harden |
-| Outcomes | 3 | 0 merge / 0 stars / 1 human reply |
+| GTM execution | 8 | 16+ PRs + first merge |
+| Outcomes | **5** | **1 merge** · 0 stars · 1 champion maintainer |
 
 ---
 
@@ -139,9 +131,7 @@ pip install auditai                    # PyPI (after first upload — see docs/P
 | Date | Change |
 |------|--------|
 | 2026-07-12 | Initial export |
-| 2026-07-16 | 8 PRs; #25 CLOSED + qtuanph reply |
-| 2026-07-16 | +#9–14 viparse…banhmi |
-| 2026-07-16 | **Full sync #1–17** + #26; LFS harden; anime logged |
-| 2026-07-16 | PyPI prep: wheel smoke 0.1.1, `publish-pypi.yml`, `docs/PYPI.md`, install docs → `pip install auditai` |
+| 2026-07-16 | Portfolio → #17; LFS; PyPI prep |
+| 2026-07-17 | **#25 MERGED**; #26 closed + reopen tip; thank-you on #25; KPI outcomes ↑ |
 
 *Refresh with `gh pr view` / search before major decisions.*
