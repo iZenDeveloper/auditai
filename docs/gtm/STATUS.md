@@ -91,7 +91,8 @@ pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 | Priority | Item |
 |:--------:|------|
 | **P0** | Watch #25: reopen/merge by qtuanph |
-| **P0** | Retrieval suggestions posted + memo `drafts/03-qtuanph-chatbot-rag-retrieval-suggestions.md` |
+| **P0** | Retrieval suggestions posted + memo `drafts/03-qtuanph-…` |
+| **P0** | **New PR:** [chatbot-rag#26](https://github.com/qtuanph/chatbot-rag/pull/26) offline Recall@k harness |
 | Wait | Replies on remaining 7 OPEN PRs |
 | P1 | Optional deeper contribution on chatbot-rag hybrid accuracy |
 | P1 | HiTrong draft PR when cadence allows |
