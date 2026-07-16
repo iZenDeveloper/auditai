@@ -53,6 +53,29 @@ def _redact(s: str) -> str:
     return s
 
 
+# Repos with Git LFS break when git-lfs binary is missing (clone/checkout/add).
+_LFS_GIT_CFG = (
+    "-c",
+    "filter.lfs.smudge=",
+    "-c",
+    "filter.lfs.clean=",
+    "-c",
+    "filter.lfs.process=",
+    "-c",
+    "filter.lfs.required=false",
+)
+
+
+def with_lfs_disabled(cmd: list[str]) -> list[str]:
+    """Inject git -c filter.lfs.*=… so operations work without git-lfs installed."""
+    if not cmd or cmd[0] != "git":
+        return cmd
+    # Already patched?
+    if len(cmd) > 2 and cmd[1] == "-c" and "filter.lfs" in cmd[2]:
+        return cmd
+    return [cmd[0], *_LFS_GIT_CFG, *cmd[1:]]
+
+
 def run(
     cmd: list[str],
     *,
@@ -61,8 +84,10 @@ def run(
     check: bool = True,
     capture: bool = False,
 ) -> subprocess.CompletedProcess[str]:
+    cmd = with_lfs_disabled(cmd)
     log("+ " + _redact(" ".join(cmd)))
     merged = os.environ.copy()
+    merged.setdefault("GIT_LFS_SKIP_SMUDGE", "1")
     if env:
         merged.update(env)
     return subprocess.run(
@@ -432,11 +457,24 @@ def main() -> int:
     if args.workflow_example_only:
         prep_cmd.append("--workflow-example-only")
 
+    # Always skip LFS smudge globally for this process (missing git-lfs binary).
+    os.environ.setdefault("GIT_LFS_SKIP_SMUDGE", "1")
+
     if not args.skip_prep:
         log(f"== prep {args.repo} ==")
         run(prep_cmd)
     elif not clone.is_dir():
         raise StepError(f"--skip-prep but missing clone: {clone}")
+
+    # Persist LFS-off in the worktree (covers --skip-prep reuses).
+    if clone.is_dir() and (clone / ".git").exists():
+        for key, value in (
+            ("filter.lfs.smudge", "cat"),
+            ("filter.lfs.clean", "cat"),
+            ("filter.lfs.process", ""),
+            ("filter.lfs.required", "false"),
+        ):
+            run(["git", "config", key, value], cwd=clone, check=False, capture=True)
 
     yml = clone / "tests" / "auditai" / "auditai.yml"
     if not yml.is_file():

@@ -54,6 +54,16 @@ def test_default_model():
     assert mod.default_model("mock") == "mock"
 
 
+def test_with_lfs_disabled():
+    assert mod.with_lfs_disabled(["gh", "pr", "list"]) == ["gh", "pr", "list"]
+    out = mod.with_lfs_disabled(["git", "status"])
+    assert out[0] == "git"
+    assert "filter.lfs.smudge=" in out
+    assert out[-1] == "status"
+    # idempotent
+    assert mod.with_lfs_disabled(out) == out
+
+
 def test_prepare_yml_for_commit_resets_judge(tmp_path: Path):
     yml = tmp_path / "auditai.yml"
     yml.write_text(

@@ -14,15 +14,47 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import textwrap
 from pathlib import Path
 
+# Repos with Git LFS fail hard when `git-lfs` is not installed. Skip smudge and
+# disable filters so clone/checkout of docs still works for guerrilla prep.
+_LFS_GIT_CFG = (
+    "-c",
+    "filter.lfs.smudge=",
+    "-c",
+    "filter.lfs.clean=",
+    "-c",
+    "filter.lfs.process=",
+    "-c",
+    "filter.lfs.required=false",
+)
+
 
 def run(cmd: list[str], cwd: Path | None = None) -> None:
     print("+", " ".join(cmd))
-    subprocess.run(cmd, cwd=cwd, check=True)
+    env = os.environ.copy()
+    env.setdefault("GIT_LFS_SKIP_SMUDGE", "1")
+    subprocess.run(cmd, cwd=cwd, check=True, env=env)
+
+
+def run_git(args: list[str], cwd: Path | None = None) -> None:
+    """Run git with LFS filters disabled (no git-lfs binary required)."""
+    run(["git", *_LFS_GIT_CFG, *args], cwd=cwd)
+
+
+def disable_lfs_in_repo(repo: Path) -> None:
+    """Persist LFS-off config so later git add/checkout in this worktree stay safe."""
+    for key, value in (
+        ("filter.lfs.smudge", "cat"),
+        ("filter.lfs.clean", "cat"),
+        ("filter.lfs.process", ""),
+        ("filter.lfs.required", "false"),
+    ):
+        run_git(["config", key, value], cwd=repo)
 
 
 _VI_CHARS = re.compile(r"[ăâêôơưđáàảãạéèẻẽẹíìỉĩịóòỏõọúùủũụýỳỷỹỵ]", re.I)
@@ -516,15 +548,18 @@ def main() -> int:
     args.workdir.mkdir(parents=True, exist_ok=True)
 
     url = f"https://github.com/{args.repo}.git"
+    os.environ.setdefault("GIT_LFS_SKIP_SMUDGE", "1")
     if dest.exists():
         print(f"exists: {dest} (pull --ff-only)")
-        run(["git", "-C", str(dest), "pull", "--ff-only"])
+        disable_lfs_in_repo(dest)
+        run_git(["-C", str(dest), "pull", "--ff-only"])
     else:
-        cmd = ["git", "clone", "--depth", "1"]
+        cmd = ["clone", "--depth", "1"]
         if args.branch:
             cmd += ["--branch", args.branch]
         cmd += [url, str(dest)]
-        run(cmd)
+        run_git(cmd)
+        disable_lfs_in_repo(dest)
 
     corpus = collect_public_docs(dest)
     chunks = extract_text_snippets(corpus, max_chunks=max(8, args.max_chunks))
