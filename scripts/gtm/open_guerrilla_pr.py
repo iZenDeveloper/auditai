@@ -536,17 +536,37 @@ def main() -> int:
             cwd=clone,
             check=False,
         )
-        run(["git", "fetch", "origin", "main"], cwd=clone, check=False)
+        # Resolve default branch (main vs master, etc.)
+        base_branch = "main"
+        view = run(
+            ["gh", "repo", "view", args.repo, "--json", "defaultBranchRef"],
+            capture=True,
+            check=False,
+        )
+        try:
+            ref = json.loads(view.stdout or "{}").get("defaultBranchRef") or {}
+            if ref.get("name"):
+                base_branch = ref["name"]
+        except json.JSONDecodeError:
+            pass
+        log(f"default base branch: {base_branch}")
+
+        run(["git", "fetch", "origin", base_branch], cwd=clone, check=False)
         run(
-            ["git", "checkout", "-B", args.branch, "origin/main"],
+            ["git", "checkout", "-B", args.branch, f"origin/{base_branch}"],
             cwd=clone,
             check=False,
         )
-        # if origin/main missing, use current HEAD
+        # if origin/<default> missing, use current HEAD
         run(["git", "checkout", "-B", args.branch], cwd=clone, check=False)
 
         files = select_commit_files(clone, args.workflow_example_only)
-        run(["git", "add", "--"] + [str(p.relative_to(clone)) for p in files], cwd=clone)
+        # -f: some repos gitignore tests/ (or parts of it); force-add AuditAI scaffold
+        run(
+            ["git", "add", "-f", "--"]
+            + [str(p.relative_to(clone)) for p in files],
+            cwd=clone,
+        )
 
         # commit if staged
         st = run(["git", "status", "--porcelain"], cwd=clone, capture=True)
@@ -593,7 +613,7 @@ def main() -> int:
                 "--head",
                 f"{me}:{args.branch}",
                 "--base",
-                "main",
+                base_branch,
                 "--title",
                 args.title,
                 "--body-file",
@@ -637,6 +657,7 @@ def main() -> int:
             "repo": args.repo,
             "fork": fork,
             "branch": args.branch,
+            "base": base_branch,
             "pr_url": pr_url,
             "judge": args.judge,
             "model": model,

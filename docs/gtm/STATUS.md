@@ -1,6 +1,6 @@
 # GTM / project status — AuditAI
 
-**Snapshot:** 2026-07-16 (live re-check)  
+**Snapshot:** 2026-07-16 (evening batch)  
 **Last synced:** 2026-07-16  
 **Owner account:** [iZenDeveloper](https://github.com/iZenDeveloper)  
 **Product repo:** https://github.com/iZenDeveloper/auditai  
@@ -38,6 +38,7 @@ pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 | # | Target | PR | State | Baseline | Maintainer | Notes |
 |---|--------|-----|-------|----------|------------|-------|
 | 1 | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#25](https://github.com/qtuanph/chatbot-rag/pull/25) | **CLOSED** (not merged) | PASS (mock cũ) | **qtuanph — positive** (2026-07-16): thanks + intends merge + invites RAG accuracy help | We replied: reopen/merge tip + offer hybrid eval help |
+| 1b | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#26](https://github.com/qtuanph/chatbot-rag/pull/26) | OPEN | n/a (Recall@k harness) | — | Offline retrieval eval follow-up |
 | 2 | [vietnam-labor-law-rag](https://github.com/ducdanh2304/vietnam-labor-law-rag) | [#1](https://github.com/ducdanh2304/vietnam-labor-law-rag/pull/1) | OPEN | FAIL Grok | none | Follow-up done |
 | 3 | [Traffic-law-chatbot](https://github.com/tontide1/Traffic-law-chatbot) | [#9](https://github.com/tontide1/Traffic-law-chatbot/pull/9) | OPEN | FAIL Grok | none (Sourcery bot only) | Sourcery addressed |
 | 4 | [BIN9721/Chatbot](https://github.com/BIN9721/Chatbot) | [#1](https://github.com/BIN9721/Chatbot/pull/1) | OPEN | FAIL Grok | none | Follow-up done |
@@ -45,21 +46,27 @@ pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 | 6 | [rag-traffic-vn](https://github.com/congmnguyen/rag-traffic-vn) | [#1](https://github.com/congmnguyen/rag-traffic-vn/pull/1) | OPEN | FAIL Grok | none | Opened 2026-07-13; follow-up 2026-07-16 |
 | 7 | [LexMind](https://github.com/hnamyud/LexMind) | [#2](https://github.com/hnamyud/LexMind/pull/2) | OPEN | FAIL Grok | none | Opened 2026-07-13; follow-up 2026-07-16 |
 | 8 | [TubeNote](https://github.com/buitrongtrinh/TubeNote) | [#1](https://github.com/buitrongtrinh/TubeNote/pull/1) | OPEN | FAIL Grok | none | Opened 2026-07-13; follow-up 2026-07-16 |
+| 9 | [viparse](https://github.com/minhtridinh-kayden/viparse) | [#54](https://github.com/minhtridinh-kayden/viparse/pull/54) | OPEN | FAIL Grok | none | Opened 2026-07-16 |
+| 10 | [VietNam-CyberLaw-RAG-](https://github.com/QuangVu404/VietNam-CyberLaw-RAG-) | [#1](https://github.com/QuangVu404/VietNam-CyberLaw-RAG-/pull/1) | OPEN | FAIL Grok | none | Opened 2026-07-16 |
+| 11 | [Edu_Omni_MyMind](https://github.com/khang3004/Edu_Omni_MyMind) | [#2](https://github.com/khang3004/Edu_Omni_MyMind/pull/2) | OPEN | FAIL Grok | none | force-add after gitignore `tests/` |
+| 12 | [Chatbot_tuyen_sinh_FPTU_2026](https://github.com/HoangLeminh17/Chatbot_tuyen_sinh_FPTU_2026) | [#1](https://github.com/HoangLeminh17/Chatbot_tuyen_sinh_FPTU_2026/pull/1) | OPEN | FAIL Grok | none | Opened 2026-07-16 (MIT, VN) |
+| 13 | [local-rag-pdf-assistant](https://github.com/SagarCodes03/local-rag-pdf-assistant) | [#1](https://github.com/SagarCodes03/local-rag-pdf-assistant/pull/1) | OPEN | FAIL Grok | none | Opened 2026-07-16 |
+| 14 | [banhmi](https://github.com/dannyota/banhmi) | [#1](https://github.com/dannyota/banhmi/pull/1) | OPEN | FAIL Grok | none | base=`master`; VN banking RAG+MCP |
 
 ### KPI snapshot (2026-07-16)
 
 | KPI | Current | Early target |
 |-----|--------:|--------------|
-| PRs opened | **8** | ≥10 |
-| Open now | **7** | — |
+| Quality-gate PRs opened | **14** (+#26 harness) | ≥10 ✓ |
+| Open now | **13** quality-gate + #26 | — |
 | Closed (no merge yet) | **1** (#25) | — |
 | Merged | **0** | ≥1–3 |
 | Human maintainer replies | **1** (qtuanph — positive) | ≥3 |
 | AuditAI stars | **0** | organic after merge/badge |
-| Follow-ups | **8/8** | — |
+| Follow-ups (older set) | **8/8** | no same-day re-ping |
 
-**Milestone:** first positive maintainer reply on chatbot-rag #25.  
-**Action:** wait for reopen/merge; optional follow-up on retrieval accuracy contribution.
+**Milestone:** first positive maintainer reply on chatbot-rag #25; portfolio past 10 PRs.  
+**Action:** wait reopen/merge #25; no spam follow-ups on same-day PRs.
 
 ---
 
@@ -72,6 +79,8 @@ pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 | One-shot | `scripts/gtm/open_guerrilla_pr.py` / `run_growth_hack.sh --open-pr` |
 | PR body | `scripts/gtm/fill_pr_body.py` |
 | Playbook | [`GROWTH_HACK.md`](./GROWTH_HACK.md) · [`TARGETS.md`](./TARGETS.md) |
+
+**Script harden (2026-07-16):** `git add -f` for ignored `tests/`; auto-detect default branch (`main`/`master`).
 
 ---
 
@@ -91,12 +100,13 @@ pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 | Priority | Item |
 |:--------:|------|
 | **P0** | Watch #25: reopen/merge by qtuanph |
-| **P0** | Retrieval suggestions posted + memo `drafts/03-qtuanph-…` |
-| **P0** | **New PR:** [chatbot-rag#26](https://github.com/qtuanph/chatbot-rag/pull/26) offline Recall@k harness |
-| Wait | Replies on remaining 7 OPEN PRs |
+| **P0** | Watch #26 Recall@k harness |
+| Wait | Replies on OPEN PRs (no same-day ping) |
 | P1 | Optional deeper contribution on chatbot-rag hybrid accuracy |
 | P1 | HiTrong draft PR when cadence allows |
+| P1 | BuiHoanDuy/GTVT (no license — check first) |
 | P2 | About/topics on auditai · optional PyPI |
+| P2 | Commit/push script harden to auditai main |
 
 ---
 
@@ -105,7 +115,7 @@ pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 | Layer | /10 | Note |
 |-------|----:|------|
 | Product build | 8 | v0.1.x shippable |
-| GTM execution | 7 | 8 PRs + first positive reply |
+| GTM execution | 8 | 14 PRs + first positive reply; past early target |
 | Outcomes | 3 | Still 0 merge / 0 stars |
 
 ---
@@ -117,5 +127,6 @@ pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 | 2026-07-12 | Initial export |
 | 2026-07-12 | Live re-sync 5 OPEN |
 | 2026-07-16 | 8 PRs; #25 CLOSED + positive qtuanph reply; follow-ups on 4 newest |
+| 2026-07-16 | +#9–11 viparse/CyberLaw/Edu; +#12–14 FPTU/local-rag/banhmi; script `git add -f` + default-branch |
 
 *Refresh with `gh pr view` before major decisions.*
