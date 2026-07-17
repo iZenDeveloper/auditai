@@ -4,21 +4,28 @@
 [![Action e2e](https://github.com/iZenDeveloper/auditai/actions/workflows/action-e2e.yml/badge.svg)](https://github.com/iZenDeveloper/auditai/actions/workflows/action-e2e.yml)
 [![Release](https://img.shields.io/github/v/release/iZenDeveloper/auditai)](https://github.com/iZenDeveloper/auditai/releases/latest)
 [![PyPI](https://img.shields.io/pypi/v/auditai-cli)](https://pypi.org/project/auditai-cli/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/auditai-cli)](https://pypi.org/project/auditai-cli/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 **Developer-first LLM/RAG safety audits for CI/CD.**
 
-Open-core CLI that scores **Faithfulness**, **Answer Relevancy**, and **Prompt Injection** resistance against your own API — with **BYOK** (bring your own OpenAI key). Designed to fail the build when quality drops.
+Open-core CLI that scores **Faithfulness**, **Answer Relevancy**, and **Prompt Injection** resistance against *your* API — **BYOK** (OpenAI, xAI/Grok, or offline mock). Fail the build when quality drops.
+
+| Install (PyPI) | CLI | Import |
+|----------------|-----|--------|
+| `pip install auditai-cli` | `auditai` | `import auditai` |
+
+> PyPI distribution name is **`auditai-cli`** because bare `auditai` collides with an existing package name under PyPI’s similarity rules. The command and Python package stay **`auditai`**.
 
 ```bash
 pip install auditai-cli
-# optional PDF certificates:  pip install "auditai-cli[pdf]"
-# fallback (dev pin from GitHub):
-#   pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
+# optional PDF certificates:
+#   pip install "auditai-cli[pdf]"
 
-export OPENAI_API_KEY=sk-...   # OpenAI judge
-# or: export XAI_API_KEY=xai-...  and judge.provider=xai (Grok)
-# or: judge.provider=mock for offline demos
+export OPENAI_API_KEY=sk-...      # judge.provider=openai
+# or: export XAI_API_KEY=xai-...  # judge.provider=xai (Grok)
+# or: judge.provider=mock         # offline demos
+
 auditai init
 auditai run --config auditai.yml
 ```
@@ -30,6 +37,14 @@ auditai run --config auditai.yml
 | `2` | Config / auth / dataset error |
 | `3` | Internal error |
 
+## Used by
+
+| Project | What landed |
+|---------|-------------|
+| [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | Optional AuditAI quality-gate smoke suite — [**#25 merged**](https://github.com/qtuanph/chatbot-rag/pull/25) |
+
+Want the same scaffold on a public RAG repo? See [docs/gtm/GROWTH_HACK.md](docs/gtm/GROWTH_HACK.md) or open an issue.
+
 ## Quick start
 
 ### 1. Install
@@ -40,7 +55,7 @@ auditai run --config auditai.yml
 python -m venv .venv && source .venv/bin/activate
 pip install auditai-cli
 # or: pip install "auditai-cli[pdf]"
-# console entrypoint is still: auditai
+auditai --version   # → 0.1.1
 ```
 
 **Pin from GitHub (optional):**
@@ -62,12 +77,12 @@ pip install -e ".[dev,pdf]"
 
 ```bash
 auditai init
-# edits auditai.yml → point target.url at your RAG endpoint
+# edit auditai.yml → set target.url to your RAG/chat HTTP endpoint
 ```
 
 ### 3. Dataset
 
-`tests/auditai_dataset.json`:
+Example `tests/auditai_dataset.json`:
 
 ```json
 [
@@ -106,7 +121,7 @@ auditai run --config examples/rag_demo/auditai.yml
 
 ## `auditai.yml` (v0.1)
 
-See `examples/rag_demo/auditai.yml` for a full working example. Core fields:
+See [`examples/rag_demo/auditai.yml`](examples/rag_demo/auditai.yml) for a full working example. Core fields:
 
 - **target** — HTTP endpoint, body template, response map (`answer`, `contexts`)
 - **dataset** — path to JSON / JSONL / CSV
@@ -115,10 +130,10 @@ See `examples/rag_demo/auditai.yml` for a full working example. Core fields:
   - `openai` — `OPENAI_API_KEY` (optional `base_url` / `api_key_env` for proxies)
   - `xai` — Grok via xAI (`XAI_API_KEY`, default model `grok-4.3`)
   - `mock` — offline deterministic (no network)
-
-Reports include **`judge_usage`**: prompt/completion/total tokens (API-reported for openai/xai; estimated for mock).
 - **run.fail_on** — `average` (default) or `any`
 - **output** — JSON + Markdown reports for CI comments
+
+Reports include **`judge_usage`**: prompt / completion / total tokens (API-reported for openai/xai; estimated for mock).
 
 Env expansion: `${VAR}` and `${VAR:-default}` in config strings.
 
@@ -171,11 +186,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: AuditAI gate
-        uses: iZenDeveloper/auditai@v0.1   # local monorepo: uses: ./
+        uses: iZenDeveloper/auditai@v0.1
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # or: XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
         with:
           config: auditai.yml
+          install: auditai-cli    # PyPI (default)
           comment-on-pr: "true"
 ```
 
@@ -187,7 +204,7 @@ jobs:
 | `working-directory` | `.` | CWD for config/dataset |
 | `fail-on` | _(yaml)_ | `average` \| `any` |
 | `out` | `auditai-out` | Report directory |
-| `install` | `auditai` | Pip target (`auditai`, `.`, git URL) |
+| `install` | `auditai-cli` | Pip target (`auditai-cli`, `.`, git URL) |
 | `comment-on-pr` | `true` | Upsert PR comment with report |
 | `upload-artifact` | `true` | Upload `auditai-out` |
 | `python-version` | `3.11` | Runner Python |
@@ -252,13 +269,13 @@ Technical audit certificate (not a legal licence). Includes verdict, metrics, gi
 
 ```bash
 # Offline from last CLI run
-pip install 'auditai[pdf]'   # or: pip install fpdf2
+pip install "auditai-cli[pdf]"   # or: pip install fpdf2
 auditai report --pdf \
   --from auditai-out/auditai-report.json \
   --out auditai-out/compliance-certificate.pdf \
   --project-name my-rag
 
-# Cloud: GET /v1/runs/{id}/compliance.pdf  (or dashboard button “Export compliance PDF”)
+# Cloud: GET /v1/runs/{id}/compliance.pdf  (or dashboard “Export compliance PDF”)
 ```
 
 ## Development
@@ -274,16 +291,25 @@ Optional DeepEval backend (if installed): faithfulness / relevancy prefer DeepEv
 pip install -e ".[deepeval]"
 ```
 
+## Links
+
+| | |
+|--|--|
+| PyPI | https://pypi.org/project/auditai-cli/ |
+| Releases | https://github.com/iZenDeveloper/auditai/releases |
+| Changelog | [CHANGELOG.md](CHANGELOG.md) |
+| GTM / guerrilla playbook | [docs/gtm/GROWTH_HACK.md](docs/gtm/GROWTH_HACK.md) · [STATUS](docs/gtm/STATUS.md) |
+| PyPI publish notes | [docs/PYPI.md](docs/PYPI.md) |
+
 ## Roadmap
 
 - [x] CLI + YAML + 3 metrics + reports + exit codes
 - [x] GitHub Action (composite) + PR comment + artifact upload
-- [x] Cloud API stub (ingest runs, project keys, SQLite)
-- [x] Next.js dashboard (history + sparklines + run detail)
-- [x] Compliance PDF certificate (CLI + Cloud API + dashboard)
-- [x] Publish `v0.1.0` — https://github.com/iZenDeveloper/auditai/releases/tag/v0.1.0
-- [x] Publish `v0.1.1` — judge token usage + guerrilla fixes
-- [ ] Growth-hack: useful PRs to public RAG repos (see [docs/GTM_v0.1.md](docs/GTM_v0.1.md))
+- [x] Cloud API stub + Next.js dashboard + compliance PDF
+- [x] xAI / Grok judge + `judge_usage` tokens (`v0.1.1`)
+- [x] **PyPI** — [`auditai-cli`](https://pypi.org/project/auditai-cli/)
+- [x] First OSS merge — [chatbot-rag#25](https://github.com/qtuanph/chatbot-rag/pull/25)
+- [ ] More maintainer merges + optional README badge opt-in
 - [ ] Postgres + multi-user auth for production cloud
 
 ## License

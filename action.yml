@@ -31,10 +31,10 @@ inputs:
     default: "3.11"
   install:
     description: >
-      Pip install target for AuditAI. Use "auditai" for PyPI, or a path/URL
-      (e.g. "." or "git+https://github.com/OWNER/auditai.git").
+      Pip install target for AuditAI. Use "auditai-cli" for PyPI, or a path/URL
+      (e.g. "." or "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1").
     required: false
-    default: auditai
+    default: auditai-cli
   comment-on-pr:
     description: Post Markdown report as a PR comment when running on pull_request
     required: false
