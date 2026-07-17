@@ -47,5 +47,6 @@ jobs:
           working-directory: .
           comment-on-pr: "true"
           upload-artifact: "true"
+          # install: auditai-cli   # PyPI default; or pin:
           # install: git+https://github.com/iZenDeveloper/auditai.git@v0.1.1
           # fail-on: average
