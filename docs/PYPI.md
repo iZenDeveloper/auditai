@@ -1,7 +1,8 @@
 # Publish AuditAI to PyPI
 
-**Package name:** `auditai` (verified free on pypi.org as of 2026-07-16)  
-**Do not use:** `audit-ai` (different existing package).  
+**Package name on PyPI:** `auditai-cli`  
+**Why not `auditai`?** Upload rejected (400): too similar to existing **`audit-ai`** (PyPI normalizes hyphens).  
+**Import / CLI:** still `import auditai` and command `auditai`.  
 **Current version:** `0.1.1` (matches GitHub release tag `v0.1.1`).
 
 ---
@@ -27,7 +28,7 @@ python -m venv /tmp/auditai-pypi-smoke && \
 1. Create account: https://pypi.org/account/register/  
 2. Enable 2FA.  
 3. **Publishing → Pending publisher** (or project settings after first upload):  
-   - PyPI project name: `auditai`  
+   - PyPI project name: `auditai-cli`  
    - Owner: `iZenDeveloper`  
    - Repository: `auditai`  
    - Workflow name: `publish-pypi.yml`  
@@ -45,7 +46,7 @@ git push origin v0.1.1 --force   # avoid force if tag already good; use workflow
 
 ### B) API token (fast first upload)
 
-1. PyPI → Account settings → API tokens → **Entire account** (first publish) or scope to `auditai` after.  
+1. PyPI → Account settings → API tokens → **Entire account** (first publish) or scope to `auditai-cli` after.  
 2. Local:
 
 ```bash
@@ -67,23 +68,23 @@ uv publish --token "$(cat ~/.config/pypi_token)"
 ## 2. After first successful upload
 
 ```bash
-pip index versions auditai
-pip install auditai
+pip index versions auditai-cli
+pip install auditai-cli
 auditai --version
 ```
 
 Update guerrilla PR bodies / STATUS to lead with:
 
 ```bash
-pip install auditai
-# optional: pip install "auditai[pdf]"
+pip install auditai-cli
+# optional: pip install "auditai-cli[pdf]"
 ```
 
 Badges (README):
 
 ```markdown
-[![PyPI](https://img.shields.io/pypi/v/auditai)](https://pypi.org/project/auditai/)
-[![PyPI downloads](https://img.shields.io/pypi/dm/auditai)](https://pypi.org/project/auditai/)
+[![PyPI](https://img.shields.io/pypi/v/auditai-cli)](https://pypi.org/project/auditai-cli/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/auditai-cli)](https://pypi.org/project/auditai-cli/)
 ```
 
 ---
@@ -104,4 +105,5 @@ Badges (README):
 | 403 Invalid token | Token scope; 2FA; use `__token__` user with twine |
 | 400 File already exists | Bump version or `skip-existing` |
 | OIDC failed | Trusted publisher fields must match workflow filename + env `pypi` |
-| Name taken | Unlikely for `auditai`; verify https://pypi.org/project/auditai/ |
+| Name too similar | Bare `auditai` collides with `audit-ai` — use `auditai-cli` |
+| Name taken | Check https://pypi.org/project/auditai-cli/ |

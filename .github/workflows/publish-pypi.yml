@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/project/auditai/
+      url: https://pypi.org/project/auditai-cli/
     permissions:
       id-token: write # OIDC trusted publishing
       contents: read

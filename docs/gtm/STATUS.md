@@ -1,6 +1,6 @@
 # GTM / project status — AuditAI
 
-**Snapshot:** 2026-07-17 (first merge)  
+**Snapshot:** 2026-07-17 (first merge + PyPI)  
 **Last synced:** 2026-07-17  
 **Owner account:** [iZenDeveloper](https://github.com/iZenDeveloper)  
 **Product repo:** https://github.com/iZenDeveloper/auditai  
@@ -27,7 +27,7 @@ Machine log: [`out/pr_log.jsonl`](./out/pr_log.jsonl) (gitignored under `out/`).
 Install:
 
 ```bash
-pip install auditai                    # PyPI (after first upload — see docs/PYPI.md)
+pip install auditai-cli                # PyPI package name (CLI still: auditai)
 # pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"  # fallback
 ```
 
@@ -107,7 +107,7 @@ pip install auditai                    # PyPI (after first upload — see docs/P
 |:--------:|------|
 | **P0** | **#25 MERGED** ✓ · thank-you posted |
 | **P0** | Watch **#26** after reopen tip (posted) |
-| **P0** | **PyPI** upload still needs token / Trusted Publisher |
+| **P0** | **PyPI live:** https://pypi.org/project/auditai-cli/ **0.1.1** (`pip install auditai-cli`) |
 | P1 | Case study / README “Used by chatbot-rag” after #26 or badge |
 | P1 | Optional badge on chatbot-rag (maintainer opt-in only) |
 | Wait | No spam follow-up on 2026-07-16 OPEN batch |
@@ -122,7 +122,7 @@ pip install auditai                    # PyPI (after first upload — see docs/P
 |-------|----:|------|
 | Product build | 8 | v0.1.x shippable · tests green |
 | GTM execution | 8 | 16+ PRs + first merge |
-| Outcomes | **5** | **1 merge** · 0 stars · 1 champion maintainer |
+| Outcomes | **6** | **1 merge** · **PyPI auditai-cli** · 0 stars · 1 champion |
 
 ---
 
@@ -133,5 +133,6 @@ pip install auditai                    # PyPI (after first upload — see docs/P
 | 2026-07-12 | Initial export |
 | 2026-07-16 | Portfolio → #17; LFS; PyPI prep |
 | 2026-07-17 | **#25 MERGED**; #26 closed + reopen tip; thank-you on #25; KPI outcomes ↑ |
+| 2026-07-17 | **PyPI:** published `auditai-cli==0.1.1` (bare `auditai` blocked vs `audit-ai`) |
 
 *Refresh with `gh pr view` / search before major decisions.*

@@ -34,9 +34,10 @@ fi
 echo "== smoke wheel =="
 smoke="$(mktemp -d)"
 python3 -m venv "$smoke/v"
-"$smoke/v/bin/pip" -q install dist/auditai-*-py3-none-any.whl
+"$smoke/v/bin/pip" -q install dist/auditai_cli-*-py3-none-any.whl dist/auditai-*-py3-none-any.whl 2>/dev/null \
+  || "$smoke/v/bin/pip" -q install dist/*.whl
 ver="$("$smoke/v/bin/auditai" --version)"
-echo "installed auditai $ver"
+echo "installed auditai $ver (package auditai-cli)"
 rm -rf "$smoke"
 
 echo "== publish =="
@@ -47,4 +48,4 @@ else
   TWINE_USERNAME=__token__ TWINE_PASSWORD="$token" python3 -m twine upload dist/*
 fi
 
-echo "OK → https://pypi.org/project/auditai/"
+echo "OK → https://pypi.org/project/auditai-cli/"

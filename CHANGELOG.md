@@ -6,16 +6,17 @@ All notable changes to AuditAI are documented in this file.
 
 ### Added
 
-- **PyPI packaging path:** `docs/PYPI.md`, `scripts/publish_pypi.sh`, GitHub Actions `publish-pypi.yml` (Trusted Publishing / OIDC)
 - Guerrilla: LFS-safe clone (`git add -f`, default branch detect, skip git-lfs filters)
 
 ### Changed
 
-- README install leads with `pip install auditai` (GitHub git+ URL remains as fallback)
+- README install leads with `pip install auditai-cli`
 
-### Notes
+## [0.1.1] — PyPI distribution note
 
-- First PyPI upload of **0.1.1** pending account token or Trusted Publisher config (name `auditai` free on pypi.org)
+Published on PyPI as **`auditai-cli==0.1.1`** (2026-07-17).  
+Bare name `auditai` is rejected by PyPI as too similar to existing `audit-ai`.  
+Import package and console script remain **`auditai`**.
 
 ## [0.1.1] - 2026-07-11
 
