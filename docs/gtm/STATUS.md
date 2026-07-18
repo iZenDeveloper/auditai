@@ -1,7 +1,7 @@
 # GTM / project status — AuditAI
 
-**Snapshot:** 2026-07-17 (first merge + PyPI)  
-**Last synced:** 2026-07-17  
+**Snapshot:** 2026-07-18 (#26 MERGEABLE + PyPI)  
+**Last synced:** 2026-07-18  
 **Owner account:** [iZenDeveloper](https://github.com/iZenDeveloper)  
 **Product repo:** https://github.com/iZenDeveloper/auditai  
 
@@ -40,10 +40,10 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | # | Target | PR | State | Baseline | Maintainer | Notes |
 |---|--------|-----|-------|----------|------------|-------|
 | 1 | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#25](https://github.com/qtuanph/chatbot-rag/pull/25) | **MERGED** 2026-07-16 | PASS (mock cũ) | **qtuanph — positive + merge** | First guerrilla merge · thank-you posted |
-| 1b | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#26](https://github.com/qtuanph/chatbot-rag/pull/26) | **CLOSED** (not merged) | n/a (Recall@k) | **qtuanph — positive** (“merging right away”) | Reopen→Merge tip posted 2026-07-17 |
-| 2 | [vietnam-labor-law-rag](https://github.com/ducdanh2304/vietnam-labor-law-rag) | [#1](https://github.com/ducdanh2304/vietnam-labor-law-rag/pull/1) | OPEN | FAIL Grok | none | Follow-up done |
-| 3 | [Traffic-law-chatbot](https://github.com/tontide1/Traffic-law-chatbot) | [#9](https://github.com/tontide1/Traffic-law-chatbot/pull/9) | OPEN | FAIL Grok | none (Sourcery) | Follow-up done |
-| 4 | [BIN9721/Chatbot](https://github.com/BIN9721/Chatbot) | [#1](https://github.com/BIN9721/Chatbot/pull/1) | OPEN | FAIL Grok | none | Follow-up done |
+| 1b | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#26](https://github.com/qtuanph/chatbot-rag/pull/26) | **OPEN · MERGEABLE** | n/a (Recall@k) | **qtuanph** reopened 2026-07-18 · “will merge now” | Conflicts resolved vs main; ready to merge |
+| 2 | [vietnam-labor-law-rag](https://github.com/ducdanh2304/vietnam-labor-law-rag) | [#1](https://github.com/ducdanh2304/vietnam-labor-law-rag/pull/1) | OPEN | FAIL Grok | none | 2nd soft FU 2026-07-18 (PyPI + #25) |
+| 3 | [Traffic-law-chatbot](https://github.com/tontide1/Traffic-law-chatbot) | [#9](https://github.com/tontide1/Traffic-law-chatbot/pull/9) | OPEN | FAIL Grok | none (Sourcery) | 2nd soft FU 2026-07-18 |
+| 4 | [BIN9721/Chatbot](https://github.com/BIN9721/Chatbot) | [#1](https://github.com/BIN9721/Chatbot/pull/1) | OPEN | FAIL Grok | none | 2nd soft FU 2026-07-18 |
 | 5 | [SimpleRAG](https://github.com/quyen244/SimpleRAG) | [#1](https://github.com/quyen244/SimpleRAG/pull/1) | OPEN | FAIL Grok | none | Follow-up 2026-07-16 |
 | 6 | [rag-traffic-vn](https://github.com/congmnguyen/rag-traffic-vn) | [#1](https://github.com/congmnguyen/rag-traffic-vn/pull/1) | OPEN | FAIL Grok | none | Follow-up 2026-07-16 |
 | 7 | [LexMind](https://github.com/hnamyud/LexMind) | [#2](https://github.com/hnamyud/LexMind/pull/2) | OPEN | FAIL Grok | none | Follow-up 2026-07-16 |
@@ -58,20 +58,20 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | 16 | [hybrid-search-eval](https://github.com/kunal4040/hybrid-search-eval) | [#1](https://github.com/kunal4040/hybrid-search-eval/pull/1) | OPEN | FAIL Grok | none | eval-adjacent target |
 | 17 | [Agentic-RAG-Anime-…](https://github.com/drae1712/Agentic-RAG-Anime-Recommender-System) | [#1](https://github.com/drae1712/Agentic-RAG-Anime-Recommender-System/pull/1) | OPEN | FAIL Grok | none | git-lfs; finished after LFS-off |
 
-### KPI snapshot (2026-07-17)
+### KPI snapshot (2026-07-18)
 
 | KPI | Current | Early target |
 |-----|--------:|--------------|
 | Quality-gate PRs opened | **16** (+#26 harness) | ≥10 ✓ |
 | Open quality-gate | **~15** | — |
 | **Merged** | **1** (#25) | ≥1–3 ✓ first |
-| Closed not merged | **1** (#26) | — |
-| Human maintainer replies | **1** (qtuanph · 2 PRs) | ≥3 |
+| #26 | **OPEN · MERGEABLE** | — |
+| Human maintainer replies | **1** (qtuanph · multi msgs) | ≥3 |
 | AuditAI stars | **0** | after badge / social proof |
-| Follow-ups (older set) | **8/8** | no spam on 07-16 batch |
+| PyPI | **`auditai-cli` 0.1.1** live | ✓ |
+| Follow-ups | older set 2nd soft FU ×3 | no spam on 07-16 batch |
 
-**Milestone:** **first merge** — AuditAI quality-gate on [qtuanph/chatbot-rag#25](https://github.com/qtuanph/chatbot-rag/pull/25).  
-**Next conversion:** #26 reopen/merge; then badge opt-in + case study.
+**Milestone:** first merge #25 · PyPI live · #26 conflicts fixed, maintainer intent to merge.
 
 ---
 
@@ -105,9 +105,8 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 
 | Priority | Item |
 |:--------:|------|
-| **P0** | **#25 MERGED** ✓ · thank-you posted |
-| **P0** | Watch **#26** after reopen tip (posted) |
-| **P0** | **PyPI live:** https://pypi.org/project/auditai-cli/ **0.1.1** (`pip install auditai-cli`) |
+| **P0** | **#25 MERGED** ✓ · **PyPI live** ✓ |
+| **P0** | Watch **#26** merge (MERGEABLE; conflicts resolved 2026-07-18) |
 | P1 | Case study / README “Used by chatbot-rag” after #26 or badge |
 | P1 | Optional badge on chatbot-rag (maintainer opt-in only) |
 | Wait | No spam follow-up on 2026-07-16 OPEN batch |
@@ -134,5 +133,6 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | 2026-07-16 | Portfolio → #17; LFS; PyPI prep |
 | 2026-07-17 | **#25 MERGED**; #26 closed + reopen tip; thank-you on #25; KPI outcomes ↑ |
 | 2026-07-17 | **PyPI:** published `auditai-cli==0.1.1` (bare `auditai` blocked vs `audit-ai`) |
+| 2026-07-18 | #26 reopened by qtuanph; conflicts resolved → MERGEABLE; 2nd soft FU ×3 oldest PRs |
 
 *Refresh with `gh pr view` / search before major decisions.*

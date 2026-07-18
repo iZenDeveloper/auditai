@@ -2,7 +2,7 @@
 
 Chào bạn, dự án RAG/chatbot của bạn rất thú vị!
 
-Mình đã chạy thử **[AuditAI](https://github.com/iZenDeveloper/auditai)** (CLI + GitHub Action mã nguồn mở) để đánh giá chống ảo giác (hallucination) và vài kiểm tra an toàn cơ bản.
+Mình đã chạy thử **[AuditAI](https://github.com/iZenDeveloper/auditai)** (`pip install auditai-cli`) — CLI + GitHub Action mã nguồn mở — để đánh giá chống ảo giác (hallucination) và vài kiểm tra an toàn cơ bản.
 
 ### Kết quả baseline (máy local)
 
@@ -31,7 +31,8 @@ Từ nay mỗi lần bạn (hoặc CI) chạy workflow, pipeline sẽ tự test 
 ### Cách chạy lại
 
 ```bash
-pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
+pip install auditai-cli
+# fallback: pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
 export OPENAI_API_KEY=...   # hoặc XAI_API_KEY + judge.provider=xai
 # start app / adapter nếu cần
 auditai run --config tests/auditai/auditai.yml
