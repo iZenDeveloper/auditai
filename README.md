@@ -42,6 +42,7 @@ auditai run --config auditai.yml
 | Project | What landed |
 |---------|-------------|
 | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | Optional AuditAI quality-gate smoke suite — [**#25 merged**](https://github.com/qtuanph/chatbot-rag/pull/25) |
+| same | Offline retrieval Recall@k / MRR harness — [**#26 merged**](https://github.com/qtuanph/chatbot-rag/pull/26) |
 
 Want the same scaffold on a public RAG repo? See [docs/gtm/GROWTH_HACK.md](docs/gtm/GROWTH_HACK.md) or open an issue.
 
@@ -308,7 +309,7 @@ pip install -e ".[deepeval]"
 - [x] Cloud API stub + Next.js dashboard + compliance PDF
 - [x] xAI / Grok judge + `judge_usage` tokens (`v0.1.1`)
 - [x] **PyPI** — [`auditai-cli`](https://pypi.org/project/auditai-cli/)
-- [x] First OSS merge — [chatbot-rag#25](https://github.com/qtuanph/chatbot-rag/pull/25)
+- [x] First OSS merges — [chatbot-rag#25](https://github.com/qtuanph/chatbot-rag/pull/25) quality-gate · [#26](https://github.com/qtuanph/chatbot-rag/pull/26) Recall@k harness
 - [ ] More maintainer merges + optional README badge opt-in
 - [ ] Postgres + multi-user auth for production cloud
 

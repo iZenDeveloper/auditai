@@ -1,6 +1,6 @@
 # GTM / project status — AuditAI
 
-**Snapshot:** 2026-07-18 (#26 MERGEABLE + PyPI)  
+**Snapshot:** 2026-07-18 (#25 + #26 both MERGED)  
 **Last synced:** 2026-07-18  
 **Owner account:** [iZenDeveloper](https://github.com/iZenDeveloper)  
 **Product repo:** https://github.com/iZenDeveloper/auditai  
@@ -40,7 +40,7 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | # | Target | PR | State | Baseline | Maintainer | Notes |
 |---|--------|-----|-------|----------|------------|-------|
 | 1 | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#25](https://github.com/qtuanph/chatbot-rag/pull/25) | **MERGED** 2026-07-16 | PASS (mock cũ) | **qtuanph — positive + merge** | First guerrilla merge · thank-you posted |
-| 1b | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#26](https://github.com/qtuanph/chatbot-rag/pull/26) | **OPEN · MERGEABLE** | n/a (Recall@k) | **qtuanph** reopened 2026-07-18 · “will merge now” | Conflicts resolved vs main; ready to merge |
+| 1b | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#26](https://github.com/qtuanph/chatbot-rag/pull/26) | **MERGED** 2026-07-18 | n/a (Recall@k) | **qtuanph** | Offline Recall@k / MRR harness · 2nd merge same repo |
 | 2 | [vietnam-labor-law-rag](https://github.com/ducdanh2304/vietnam-labor-law-rag) | [#1](https://github.com/ducdanh2304/vietnam-labor-law-rag/pull/1) | OPEN | FAIL Grok | none | 2nd soft FU 2026-07-18 (PyPI + #25) |
 | 3 | [Traffic-law-chatbot](https://github.com/tontide1/Traffic-law-chatbot) | [#9](https://github.com/tontide1/Traffic-law-chatbot/pull/9) | OPEN | FAIL Grok | none (Sourcery) | 2nd soft FU 2026-07-18 |
 | 4 | [BIN9721/Chatbot](https://github.com/BIN9721/Chatbot) | [#1](https://github.com/BIN9721/Chatbot/pull/1) | OPEN | FAIL Grok | none | 2nd soft FU 2026-07-18 |
@@ -64,14 +64,14 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 |-----|--------:|--------------|
 | Quality-gate PRs opened | **16** (+#26 harness) | ≥10 ✓ |
 | Open quality-gate | **~15** | — |
-| **Merged** | **1** (#25) | ≥1–3 ✓ first |
-| #26 | **OPEN · MERGEABLE** | — |
+| **Merged** | **2** (#25 quality-gate + #26 Recall@k) | ≥1–3 ✓ |
+| #26 | **MERGED** 2026-07-18T01:40:53Z | — |
 | Human maintainer replies | **1** (qtuanph · multi msgs) | ≥3 |
 | AuditAI stars | **0** | after badge / social proof |
 | PyPI | **`auditai-cli` 0.1.1** live | ✓ |
 | Follow-ups | older set 2nd soft FU ×3 | no spam on 07-16 batch |
 
-**Milestone:** first merge #25 · PyPI live · #26 conflicts fixed, maintainer intent to merge.
+**Milestone:** **two merges** on chatbot-rag (#25 + #26) · PyPI `auditai-cli` live · champion maintainer qtuanph.
 
 ---
 
@@ -105,8 +105,8 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 
 | Priority | Item |
 |:--------:|------|
-| **P0** | **#25 MERGED** ✓ · **PyPI live** ✓ |
-| **P0** | Watch **#26** merge (MERGEABLE; conflicts resolved 2026-07-18) |
+| **P0** | **#25 + #26 MERGED** ✓ · **PyPI live** ✓ |
+| P1 | README Used by → both PRs; optional badge ask (opt-in only) |
 | P1 | Case study / README “Used by chatbot-rag” after #26 or badge |
 | P1 | Optional badge on chatbot-rag (maintainer opt-in only) |
 | Wait | No spam follow-up on 2026-07-16 OPEN batch |
@@ -121,7 +121,7 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 |-------|----:|------|
 | Product build | 8 | v0.1.x shippable · tests green |
 | GTM execution | 8 | 16+ PRs + first merge |
-| Outcomes | **6** | **1 merge** · **PyPI auditai-cli** · 0 stars · 1 champion |
+| Outcomes | **7** | **2 merges** (same champion) · **PyPI** · 0 stars |
 
 ---
 
@@ -134,5 +134,6 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | 2026-07-17 | **#25 MERGED**; #26 closed + reopen tip; thank-you on #25; KPI outcomes ↑ |
 | 2026-07-17 | **PyPI:** published `auditai-cli==0.1.1` (bare `auditai` blocked vs `audit-ai`) |
 | 2026-07-18 | #26 reopened by qtuanph; conflicts resolved → MERGEABLE; 2nd soft FU ×3 oldest PRs |
+| 2026-07-18 | **#26 MERGED** 01:40 UTC — 2nd merge; champion qtuanph |
 
 *Refresh with `gh pr view` / search before major decisions.*
