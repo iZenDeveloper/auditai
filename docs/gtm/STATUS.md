@@ -106,12 +106,12 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | Priority | Item |
 |:--------:|------|
 | **P0** | **#25 + #26 MERGED** ✓ · **PyPI live** ✓ |
-| P1 | Badge ask posted on #26 — wait reply ≥7d; no re-ping |
-| P1 | Case study / README “Used by chatbot-rag” after #26 or badge |
-| P1 | Optional badge on chatbot-rag (maintainer opt-in only) |
-| Wait | No spam follow-up on 2026-07-16 OPEN batch |
-| P1 | Selective follow-up on older OPEN after ≥5–7 days |
-| P2 | About/topics on auditai · GTVT if license OK |
+| P1 | Badge ask on #26 — wait ≥7d; no re-ping |
+| P1 | Case study / social (2 merges + `auditai-cli`) |
+| Wait | TubeNote review · no re-ping |
+| Wait | Soft FU batch 16/07 ~**21–23/07** only |
+| **Next PR** | **towardsai/ai-tutor-app** (see [`TARGETS.md`](./TARGETS.md) shortlist) — max 1 |
+| P2 | About/topics · avoid loaders (viparse lesson in TARGETS) |
 
 ---
 
@@ -136,5 +136,6 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | 2026-07-18 | #26 reopened by qtuanph; conflicts resolved → MERGEABLE; 2nd soft FU ×3 oldest PRs |
 | 2026-07-18 | **#26 MERGED** 01:40 UTC — 2nd merge; champion qtuanph |
 | 2026-07-18 | TubeNote positive review intent; viparse revert+lesson; replies posted |
+| 2026-07-18 | TARGETS: fit filter + avoid loaders + shortlist next = towardsai |
 
 *Refresh with `gh pr view` / search before major decisions.*
