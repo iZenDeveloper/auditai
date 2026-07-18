@@ -40,7 +40,7 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | # | Target | PR | State | Baseline | Maintainer | Notes |
 |---|--------|-----|-------|----------|------------|-------|
 | 1 | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#25](https://github.com/qtuanph/chatbot-rag/pull/25) | **MERGED** 2026-07-16 | PASS (mock cũ) | **qtuanph — positive + merge** | First guerrilla merge · thank-you posted |
-| 1b | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#26](https://github.com/qtuanph/chatbot-rag/pull/26) | **MERGED** 2026-07-18 | n/a (Recall@k) | **qtuanph** | Offline Recall@k / MRR harness · 2nd merge same repo |
+| 1b | [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | [#26](https://github.com/qtuanph/chatbot-rag/pull/26) | **MERGED** 2026-07-18 | n/a (Recall@k) | **qtuanph** | Offline Recall@k / MRR harness · thank-you + badge ask [posted](https://github.com/qtuanph/chatbot-rag/pull/26#issuecomment-5009416099) |
 | 2 | [vietnam-labor-law-rag](https://github.com/ducdanh2304/vietnam-labor-law-rag) | [#1](https://github.com/ducdanh2304/vietnam-labor-law-rag/pull/1) | OPEN | FAIL Grok | none | 2nd soft FU 2026-07-18 (PyPI + #25) |
 | 3 | [Traffic-law-chatbot](https://github.com/tontide1/Traffic-law-chatbot) | [#9](https://github.com/tontide1/Traffic-law-chatbot/pull/9) | OPEN | FAIL Grok | none (Sourcery) | 2nd soft FU 2026-07-18 |
 | 4 | [BIN9721/Chatbot](https://github.com/BIN9721/Chatbot) | [#1](https://github.com/BIN9721/Chatbot/pull/1) | OPEN | FAIL Grok | none | 2nd soft FU 2026-07-18 |
@@ -106,7 +106,7 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | Priority | Item |
 |:--------:|------|
 | **P0** | **#25 + #26 MERGED** ✓ · **PyPI live** ✓ |
-| P1 | README Used by → both PRs; optional badge ask (opt-in only) |
+| P1 | Badge ask posted on #26 — wait reply ≥7d; no re-ping |
 | P1 | Case study / README “Used by chatbot-rag” after #26 or badge |
 | P1 | Optional badge on chatbot-rag (maintainer opt-in only) |
 | Wait | No spam follow-up on 2026-07-16 OPEN batch |
