@@ -111,7 +111,7 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | Wait | TubeNote review · no re-ping |
 | Wait | Soft FU batch 16/07 ~**21–23/07** only |
 | **Next PR** | **towardsai/ai-tutor-app** (see [`TARGETS.md`](./TARGETS.md) shortlist) — max 1 |
-| P2 | About/topics · avoid loaders (viparse lesson in TARGETS) |
+| P2 | About/topics ✓ · avoid loaders (viparse lesson in TARGETS) |
 
 ---
 
@@ -138,5 +138,6 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | 2026-07-18 | TubeNote positive review intent; viparse revert+lesson; replies posted |
 | 2026-07-18 | TARGETS: fit filter + avoid loaders + shortlist next = towardsai |
 | 2026-07-18 | README case study: chatbot-rag #25 + #26 |
+| 2026-07-18 | GitHub About + topics set (PyPI homepage) |
 
 *Refresh with `gh pr view` / search before major decisions.*
