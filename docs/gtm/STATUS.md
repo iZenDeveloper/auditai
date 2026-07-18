@@ -107,7 +107,7 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 |:--------:|------|
 | **P0** | **#25 + #26 MERGED** ✓ · **PyPI live** ✓ |
 | P1 | Badge ask on #26 — wait ≥7d; no re-ping |
-| P1 | Case study / social (2 merges + `auditai-cli`) |
+| P1 | Case study on README ✓ · optional social repost |
 | Wait | TubeNote review · no re-ping |
 | Wait | Soft FU batch 16/07 ~**21–23/07** only |
 | **Next PR** | **towardsai/ai-tutor-app** (see [`TARGETS.md`](./TARGETS.md) shortlist) — max 1 |
@@ -137,5 +137,6 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | 2026-07-18 | **#26 MERGED** 01:40 UTC — 2nd merge; champion qtuanph |
 | 2026-07-18 | TubeNote positive review intent; viparse revert+lesson; replies posted |
 | 2026-07-18 | TARGETS: fit filter + avoid loaders + shortlist next = towardsai |
+| 2026-07-18 | README case study: chatbot-rag #25 + #26 |
 
 *Refresh with `gh pr view` / search before major decisions.*

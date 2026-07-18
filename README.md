@@ -37,14 +37,30 @@ auditai run --config auditai.yml
 | `2` | Config / auth / dataset error |
 | `3` | Internal error |
 
-## Used by
+## Case study: [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag)
 
-| Project | What landed |
-|---------|-------------|
-| [qtuanph/chatbot-rag](https://github.com/qtuanph/chatbot-rag) | Optional AuditAI quality-gate smoke suite — [**#25 merged**](https://github.com/qtuanph/chatbot-rag/pull/25) |
-| same | Offline retrieval Recall@k / MRR harness — [**#26 merged**](https://github.com/qtuanph/chatbot-rag/pull/26) |
+Vietnamese production-style RAG (LlamaIndex + Qdrant hybrid). Two opt-in contributions landed in July 2026:
 
-Want the same scaffold on a public RAG repo? See [docs/gtm/GROWTH_HACK.md](docs/gtm/GROWTH_HACK.md) or open an issue.
+| PR | What | Outcome |
+|----|------|---------|
+| [#25](https://github.com/qtuanph/chatbot-rag/pull/25) | AuditAI quality-gate scaffold (`tests/auditai/`: dataset from public docs, weak mock adapter, workflow **example only**) | **Merged** |
+| [#26](https://github.com/qtuanph/chatbot-rag/pull/26) | Offline retrieval harness — **Recall@k / MRR / nDCG@k** (no live LLM required for scoring) | **Merged** |
+
+**How we worked (playbook, not pitch):**
+
+1. **Public docs only** for smoke questions — no private corpora.  
+2. **Honest metrics** — weak mock intentionally fails under a real judge (Grok/OpenAI); committed config stays `judge.provider: mock` + env-based target URL so CI does not burn secrets by default.  
+3. **Depth over spam** — after the quality-gate merge, a second PR helped the maintainer *measure* hybrid retrieval offline before tuning knobs.  
+4. **Opt-in** — badge only if the maintainer wants it; no forced GitHub Action in the critical path.
+
+**Install the same tooling:**
+
+```bash
+pip install auditai-cli
+auditai init   # or copy a tests/auditai/ scaffold from a merged PR
+```
+
+Want a similar scaffold on another public RAG repo? See [docs/gtm/GROWTH_HACK.md](docs/gtm/GROWTH_HACK.md) or open an issue.
 
 ## Quick start
 
