@@ -47,8 +47,8 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | 5 | [SimpleRAG](https://github.com/quyen244/SimpleRAG) | [#1](https://github.com/quyen244/SimpleRAG/pull/1) | OPEN | FAIL Grok | none | Follow-up 2026-07-16 |
 | 6 | [rag-traffic-vn](https://github.com/congmnguyen/rag-traffic-vn) | [#1](https://github.com/congmnguyen/rag-traffic-vn/pull/1) | OPEN | FAIL Grok | none | Follow-up 2026-07-16 |
 | 7 | [LexMind](https://github.com/hnamyud/LexMind) | [#2](https://github.com/hnamyud/LexMind/pull/2) | OPEN | FAIL Grok | none | Follow-up 2026-07-16 |
-| 8 | [TubeNote](https://github.com/buitrongtrinh/TubeNote) | [#1](https://github.com/buitrongtrinh/TubeNote/pull/1) | OPEN | FAIL Grok | none | Follow-up 2026-07-16 |
-| 9 | [viparse](https://github.com/minhtridinh-kayden/viparse) | [#54](https://github.com/minhtridinh-kayden/viparse/pull/54) | OPEN | FAIL Grok | none | 2026-07-16 |
+| 8 | [TubeNote](https://github.com/buitrongtrinh/TubeNote) | [#1](https://github.com/buitrongtrinh/TubeNote/pull/1) | OPEN | FAIL Grok | **buitrongtrinh — positive** (2026-07-18): will review; RAG reference useful | Thank-you reply posted |
+| 9 | [viparse](https://github.com/minhtridinh-kayden/viparse) | [#54](https://github.com/minhtridinh-kayden/viparse/pull/54) | MERGED then **reverted #59** | FAIL Grok | **minhtridinh-kayden**: wrong fit (loader≠RAG) + supply-chain | Graceful ack posted; avoid pure loaders |
 | 10 | [VietNam-CyberLaw-RAG-](https://github.com/QuangVu404/VietNam-CyberLaw-RAG-) | [#1](https://github.com/QuangVu404/VietNam-CyberLaw-RAG-/pull/1) | OPEN | FAIL Grok | none | 2026-07-16 |
 | 11 | [Edu_Omni_MyMind](https://github.com/khang3004/Edu_Omni_MyMind) | [#2](https://github.com/khang3004/Edu_Omni_MyMind/pull/2) | OPEN | FAIL Grok | none | force-add `tests/` |
 | 12 | [Chatbot_tuyen_sinh_FPTU_2026](https://github.com/HoangLeminh17/Chatbot_tuyen_sinh_FPTU_2026) | [#1](https://github.com/HoangLeminh17/Chatbot_tuyen_sinh_FPTU_2026/pull/1) | OPEN | FAIL Grok | none | MIT · VN |
@@ -66,7 +66,7 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | Open quality-gate | **~15** | — |
 | **Merged** | **2** (#25 quality-gate + #26 Recall@k) | ≥1–3 ✓ |
 | #26 | **MERGED** 2026-07-18T01:40:53Z | — |
-| Human maintainer replies | **1** (qtuanph · multi msgs) | ≥3 |
+| Human maintainer replies | **3** (qtuanph · TubeNote · viparse) | ≥3 ✓ |
 | AuditAI stars | **0** | after badge / social proof |
 | PyPI | **`auditai-cli` 0.1.1** live | ✓ |
 | Follow-ups | older set 2nd soft FU ×3 | no spam on 07-16 batch |
@@ -135,5 +135,6 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | 2026-07-17 | **PyPI:** published `auditai-cli==0.1.1` (bare `auditai` blocked vs `audit-ai`) |
 | 2026-07-18 | #26 reopened by qtuanph; conflicts resolved → MERGEABLE; 2nd soft FU ×3 oldest PRs |
 | 2026-07-18 | **#26 MERGED** 01:40 UTC — 2nd merge; champion qtuanph |
+| 2026-07-18 | TubeNote positive review intent; viparse revert+lesson; replies posted |
 
 *Refresh with `gh pr view` / search before major decisions.*
