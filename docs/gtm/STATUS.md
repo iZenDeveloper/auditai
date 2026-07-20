@@ -1,7 +1,7 @@
 # GTM / project status — AuditAI
 
-**Snapshot:** 2026-07-18 (#25 + #26 both MERGED)  
-**Last synced:** 2026-07-18  
+**Snapshot:** 2026-07-21 (#25 + #26 both MERGED)
+**Last synced:** 2026-07-21
 **Owner account:** [iZenDeveloper](https://github.com/iZenDeveloper)  
 **Product repo:** https://github.com/iZenDeveloper/auditai  
 
@@ -51,25 +51,25 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | 9 | [viparse](https://github.com/minhtridinh-kayden/viparse) | [#54](https://github.com/minhtridinh-kayden/viparse/pull/54) | MERGED then **reverted #59** | FAIL Grok | **minhtridinh-kayden**: wrong fit (loader≠RAG) + supply-chain | Graceful ack posted; avoid pure loaders |
 | 10 | [VietNam-CyberLaw-RAG-](https://github.com/QuangVu404/VietNam-CyberLaw-RAG-) | [#1](https://github.com/QuangVu404/VietNam-CyberLaw-RAG-/pull/1) | OPEN | FAIL Grok | none | 2026-07-16 |
 | 11 | [Edu_Omni_MyMind](https://github.com/khang3004/Edu_Omni_MyMind) | [#2](https://github.com/khang3004/Edu_Omni_MyMind/pull/2) | OPEN | FAIL Grok | none | force-add `tests/` |
-| 12 | [Chatbot_tuyen_sinh_FPTU_2026](https://github.com/HoangLeminh17/Chatbot_tuyen_sinh_FPTU_2026) | [#1](https://github.com/HoangLeminh17/Chatbot_tuyen_sinh_FPTU_2026/pull/1) | OPEN | FAIL Grok | none | MIT · VN |
-| 13 | [local-rag-pdf-assistant](https://github.com/SagarCodes03/local-rag-pdf-assistant) | [#1](https://github.com/SagarCodes03/local-rag-pdf-assistant/pull/1) | OPEN | FAIL Grok | none | 2026-07-16 |
-| 14 | [banhmi](https://github.com/dannyota/banhmi) | [#1](https://github.com/dannyota/banhmi/pull/1) | OPEN | FAIL Grok | none | base=`master` · VN banking |
-| 15 | [RAG-Student-Chatbot](https://github.com/HiTrong/RAG-Student-Chatbot) | [#1](https://github.com/HiTrong/RAG-Student-Chatbot/pull/1) | OPEN | FAIL Grok | none | MIT · draft was ready |
+| 12 | [Chatbot_tuyen_sinh_FPTU_2026](https://github.com/HoangLeminh17/Chatbot_tuyen_sinh_FPTU_2026) | [#1](https://github.com/HoangLeminh17/Chatbot_tuyen_sinh_FPTU_2026/pull/1) | OPEN | FAIL Grok | none | Soft FU 2026-07-21 · MIT · VN |
+| 13 | [local-rag-pdf-assistant](https://github.com/SagarCodes03/local-rag-pdf-assistant) | [#1](https://github.com/SagarCodes03/local-rag-pdf-assistant/pull/1) | OPEN | FAIL Grok | none | Soft FU 2026-07-21 |
+| 14 | [banhmi](https://github.com/dannyota/banhmi) | [#1](https://github.com/dannyota/banhmi/pull/1) | **CLOSED** 2026-07-19 | FAIL Grok | none | No comments · base=`master` · VN banking |
+| 15 | [RAG-Student-Chatbot](https://github.com/HiTrong/RAG-Student-Chatbot) | [#1](https://github.com/HiTrong/RAG-Student-Chatbot/pull/1) | OPEN | FAIL Grok | none | Soft FU 2026-07-21 · MIT |
 | 16 | [hybrid-search-eval](https://github.com/kunal4040/hybrid-search-eval) | [#1](https://github.com/kunal4040/hybrid-search-eval/pull/1) | OPEN | FAIL Grok | none | eval-adjacent target |
 | 17 | [Agentic-RAG-Anime-…](https://github.com/drae1712/Agentic-RAG-Anime-Recommender-System) | [#1](https://github.com/drae1712/Agentic-RAG-Anime-Recommender-System/pull/1) | OPEN | FAIL Grok | none | git-lfs; finished after LFS-off |
 
-### KPI snapshot (2026-07-18)
+### KPI snapshot (2026-07-21)
 
 | KPI | Current | Early target |
 |-----|--------:|--------------|
 | Quality-gate PRs opened | **16** (+#26 harness) | ≥10 ✓ |
-| Open quality-gate | **~15** | — |
+| Open quality-gate | **~14** | — |
 | **Merged** | **2** (#25 quality-gate + #26 Recall@k) | ≥1–3 ✓ |
 | #26 | **MERGED** 2026-07-18T01:40:53Z | — |
 | Human maintainer replies | **3** (qtuanph · TubeNote · viparse) | ≥3 ✓ |
 | AuditAI stars | **0** | after badge / social proof |
 | PyPI | **`auditai-cli` 0.1.1** live | ✓ |
-| Follow-ups | older set 2nd soft FU ×3 | no spam on 07-16 batch |
+| Follow-ups | older set 2nd soft FU ×3 · 07-16 batch first soft FU ×3 on 07-21 | max 3/day |
 
 **Milestone:** **two merges** on chatbot-rag (#25 + #26) · PyPI `auditai-cli` live · champion maintainer qtuanph.
 
@@ -110,7 +110,7 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | P1 | Badge ask on #26 — wait ≥7d; no re-ping |
 | P1 | Case study on README ✓ · optional social repost |
 | Wait | TubeNote review · no re-ping |
-| Wait | Soft FU batch 16/07 ~**21–23/07** only |
+| Wait | 16/07 batch: first soft FU ×3 on 21/07; remaining candidates ≥22/07, max 2–3/day |
 | **Next PR** | **towardsai/ai-tutor-app** (see [`TARGETS.md`](./TARGETS.md) shortlist) — max 1 |
 | P2 | About/topics ✓ · avoid loaders (viparse lesson in TARGETS) |
 
@@ -141,5 +141,6 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | 2026-07-18 | README case study: chatbot-rag #25 + #26 |
 | 2026-07-18 | GitHub About + topics set (PyPI homepage) |
 | 2026-07-18 | HANDOFF_CODEX.md + AGENTS.md for next agent |
+| 2026-07-21 | Live sync: TubeNote still OPEN; no badge reply on #26; banhmi #1 CLOSED; first soft FU sent to FPTU #1, local-rag-pdf #1, HiTrong #1 |
 
 *Refresh with `gh pr view` / search before major decisions.*
