@@ -84,6 +84,7 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | One-shot | `scripts/gtm/open_guerrilla_pr.py` |
 | PR body | `scripts/gtm/fill_pr_body.py` |
 | Playbook | [`GROWTH_HACK.md`](./GROWTH_HACK.md) · [`TARGETS.md`](./TARGETS.md) |
+| **Codex / agent handoff** | [`HANDOFF_CODEX.md`](./HANDOFF_CODEX.md) · root [`AGENTS.md`](../../AGENTS.md) |
 | PyPI | [`docs/PYPI.md`](../PYPI.md) · `publish-pypi.yml` |
 
 **Script harden:** `git add -f` · default branch · LFS-off · no PAT in remotes.
@@ -139,5 +140,6 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | 2026-07-18 | TARGETS: fit filter + avoid loaders + shortlist next = towardsai |
 | 2026-07-18 | README case study: chatbot-rag #25 + #26 |
 | 2026-07-18 | GitHub About + topics set (PyPI homepage) |
+| 2026-07-18 | HANDOFF_CODEX.md + AGENTS.md for next agent |
 
 *Refresh with `gh pr view` / search before major decisions.*
