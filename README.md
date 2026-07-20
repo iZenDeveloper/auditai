@@ -158,6 +158,11 @@ Keep a known-good JSON report and fail CI if any existing metric mean drops by m
 than the allowed absolute amount:
 
 ```bash
+# Promote a passing report. The baseline excludes questions, answers and contexts.
+auditai baseline \
+  --from auditai-out/auditai-report.json \
+  --out tests/auditai-baseline.json
+
 auditai compare \
   --baseline tests/auditai-baseline.json \
   --current auditai-out/auditai-report.json \
@@ -167,7 +172,8 @@ auditai compare \
 The command returns `0` when all baseline metrics stay within tolerance, `1` for a
 quality regression (including a baseline metric missing from the current report), and
 `2` for invalid input. New metrics that exist only in the current report do not fail
-the comparison.
+the comparison. `auditai baseline` refuses failed reports and will not overwrite an
+existing baseline unless `--force` is supplied.
 
 Env expansion: `${VAR}` and `${VAR:-default}` in config strings.
 

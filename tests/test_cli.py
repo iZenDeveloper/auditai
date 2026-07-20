@@ -105,3 +105,93 @@ def test_compare_invalid_report_is_user_error(tmp_path: Path):
 
     assert result.exit_code == 2
     assert "invalid baseline report JSON" in result.output
+
+
+def test_baseline_keeps_aggregates_but_removes_sensitive_results(tmp_path: Path):
+    source = tmp_path / "report.json"
+    output = tmp_path / "baseline.json"
+    source.write_text(
+        json.dumps(
+            {
+                "overall_passed": True,
+                "run_id": "run-1",
+                "finished_at": "2026-07-21T00:00:00Z",
+                "total_cases": 2,
+                "judge_usage": {"provider": "openai", "model": "gpt-test", "total_tokens": 9},
+                "aggregates": {
+                    "faithfulness": {"mean": 0.9, "threshold": 0.8, "n_scored": 2}
+                },
+                "results": [
+                    {
+                        "question": "private question",
+                        "answer": "private answer",
+                        "contexts_used": ["private context"],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = runner.invoke(
+        app,
+        ["baseline", "--from", str(source), "--out", str(output)],
+    )
+
+    assert result.exit_code == 0
+    baseline = json.loads(output.read_text(encoding="utf-8"))
+    assert baseline["kind"] == "auditai_baseline"
+    assert baseline["aggregates"]["faithfulness"]["mean"] == 0.9
+    assert baseline["source"]["judge"] == {"provider": "openai", "model": "gpt-test"}
+    serialized = json.dumps(baseline)
+    assert "private question" not in serialized
+    assert "private answer" not in serialized
+    assert "private context" not in serialized
+    assert "total_tokens" not in serialized
+
+
+def test_baseline_refuses_failed_report(tmp_path: Path):
+    source = tmp_path / "report.json"
+    output = tmp_path / "baseline.json"
+    source.write_text(
+        json.dumps(
+            {
+                "overall_passed": False,
+                "aggregates": {"faithfulness": {"mean": 0.7}},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = runner.invoke(
+        app,
+        ["baseline", "--from", str(source), "--out", str(output)],
+    )
+
+    assert result.exit_code == 2
+    assert "did not pass" in result.output
+    assert not output.exists()
+
+
+def test_baseline_does_not_overwrite_without_force(tmp_path: Path):
+    source = tmp_path / "report.json"
+    output = tmp_path / "baseline.json"
+    source.write_text(
+        json.dumps(
+            {
+                "overall_passed": True,
+                "aggregates": {"faithfulness": {"mean": 0.9}},
+            }
+        ),
+        encoding="utf-8",
+    )
+    output.write_text("keep me", encoding="utf-8")
+
+    result = runner.invoke(
+        app,
+        ["baseline", "--from", str(source), "--out", str(output)],
+    )
+
+    assert result.exit_code == 2
+    assert "already exists" in result.output
+    assert output.read_text(encoding="utf-8") == "keep me"

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -28,6 +29,58 @@ class ComparisonResult:
     @property
     def passed(self) -> bool:
         return all(item.passed for item in self.comparisons)
+
+
+def create_baseline_file(
+    report_path: str | Path,
+    output_path: str | Path,
+    *,
+    force: bool = False,
+) -> Path:
+    """Write a privacy-safe baseline containing aggregates and minimal provenance."""
+    source = Path(report_path)
+    output = Path(output_path)
+    payload = _load_report_payload(source, label="source")
+    if payload.get("overall_passed") is not True:
+        raise ConfigError("source report did not pass; refusing to promote it as a baseline")
+    if output.exists() and not force:
+        raise ConfigError(f"baseline already exists: {output} (use --force to overwrite)")
+
+    means = _aggregate_means(payload, label="source")
+    aggregates = payload.get("aggregates") or payload.get("metric_aggregates") or {}
+    safe_aggregates: dict[str, dict[str, Any]] = {}
+    for name, mean in means.items():
+        aggregate = aggregates.get(name, {})
+        safe: dict[str, Any] = {"mean": mean}
+        for key in ("threshold", "n_scored"):
+            value = aggregate.get(key)
+            if isinstance(value, (int, float)) and not isinstance(value, bool):
+                safe[key] = value
+        safe_aggregates[name] = safe
+
+    judge_usage = payload.get("judge_usage")
+    judge: dict[str, str] = {}
+    if isinstance(judge_usage, dict):
+        for key in ("provider", "model"):
+            value = judge_usage.get(key)
+            if isinstance(value, str) and value:
+                judge[key] = value
+
+    baseline = {
+        "schema_version": "0.1",
+        "kind": "auditai_baseline",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "source": {
+            "run_id": str(payload.get("run_id") or ""),
+            "finished_at": str(payload.get("finished_at") or ""),
+            "total_cases": int(payload.get("total_cases") or 0),
+            "judge": judge,
+        },
+        "aggregates": safe_aggregates,
+    }
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(baseline, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return output
 
 
 def compare_report_files(
@@ -76,6 +129,10 @@ def compare_report_files(
 
 
 def _load_aggregate_means(path: Path, *, label: str) -> dict[str, float]:
+    return _aggregate_means(_load_report_payload(path, label=label), label=label)
+
+
+def _load_report_payload(path: Path, *, label: str) -> dict[str, Any]:
     if not path.exists():
         raise ConfigError(f"{label} report not found: {path}")
     try:
@@ -84,7 +141,10 @@ def _load_aggregate_means(path: Path, *, label: str) -> dict[str, float]:
         raise ConfigError(f"invalid {label} report JSON: {path}: {exc}") from exc
     if not isinstance(payload, dict):
         raise ConfigError(f"invalid {label} report: root must be an object")
+    return payload
 
+
+def _aggregate_means(payload: dict[str, Any], *, label: str) -> dict[str, float]:
     aggregates: Any = payload.get("aggregates") or payload.get("metric_aggregates")
     if not isinstance(aggregates, dict) or not aggregates:
         raise ConfigError(f"invalid {label} report: no metric aggregates")

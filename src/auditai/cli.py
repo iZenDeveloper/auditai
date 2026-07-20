@@ -10,7 +10,7 @@ import typer
 from rich.console import Console
 
 from auditai import __version__
-from auditai.compare import compare_report_files
+from auditai.compare import compare_report_files, create_baseline_file
 from auditai.config import config_to_init_yaml, ensure_judge_auth, load_config
 from auditai.dataset import load_dataset
 from auditai.errors import (
@@ -190,6 +190,34 @@ def compare_cmd(
             raise typer.Exit(EXIT_PASS)
         console.print("[red]Regression gate failed.[/red]")
         raise typer.Exit(EXIT_AUDIT_FAILED)
+    except typer.Exit:
+        raise
+    except ConfigError as e:
+        console.print(f"[red]error:[/red] {e}")
+        raise typer.Exit(EXIT_USER_ERROR) from e
+
+
+@app.command("baseline")
+def baseline_cmd(
+    source: Path = typer.Option(
+        Path("auditai-out/auditai-report.json"),
+        "--from",
+        help="Passing auditai-report.json to promote",
+    ),
+    out: Path = typer.Option(
+        Path("tests/auditai-baseline.json"),
+        "--out",
+        "-o",
+        help="Privacy-safe baseline JSON to write",
+    ),
+    force: bool = typer.Option(False, "--force", help="Overwrite an existing baseline"),
+) -> None:
+    """Create a privacy-safe regression baseline from a passing report."""
+    try:
+        path = create_baseline_file(source, out, force=force)
+        console.print(f"[green]created baseline[/green] {path}")
+        console.print("Only aggregate metrics and minimal run provenance were retained.")
+        raise typer.Exit(EXIT_PASS)
     except typer.Exit:
         raise
     except ConfigError as e:
