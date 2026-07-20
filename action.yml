@@ -25,6 +25,16 @@ inputs:
     description: Output directory for reports
     required: false
     default: auditai-out
+  baseline:
+    description: >
+      Optional path to a known-good auditai-report.json, relative to
+      working-directory. When set, the Action also runs the regression gate.
+    required: false
+    default: ""
+  max-drop:
+    description: Maximum absolute metric-mean drop allowed against baseline
+    required: false
+    default: "0.05"
   python-version:
     description: Python version for the runner
     required: false
@@ -87,6 +97,8 @@ runs:
         AUDITAI_CONFIG: ${{ inputs.config }}
         AUDITAI_OUT: ${{ inputs.out }}
         AUDITAI_FAIL_ON: ${{ inputs.fail-on }}
+        AUDITAI_BASELINE: ${{ inputs.baseline }}
+        AUDITAI_MAX_DROP: ${{ inputs.max-drop }}
       run: bash "${{ github.action_path }}/action/run.sh"
 
     - name: Upload report artifact

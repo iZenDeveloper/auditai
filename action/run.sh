@@ -5,6 +5,8 @@ set -uo pipefail
 CONFIG="${AUDITAI_CONFIG:-auditai.yml}"
 OUT="${AUDITAI_OUT:-auditai-out}"
 FAIL_ON="${AUDITAI_FAIL_ON:-}"
+BASELINE="${AUDITAI_BASELINE:-}"
+MAX_DROP="${AUDITAI_MAX_DROP:-0.05}"
 
 mkdir -p "$OUT"
 
@@ -29,6 +31,30 @@ if [[ ! -f "$REPORT_MD" ]]; then
     echo ""
     echo "_CLI exited before writing a full report (config/auth/target error)._"
   } > "$REPORT_MD"
+fi
+
+# A threshold pass can still regress relative to the project's known-good run.
+# Preserve an existing audit failure; otherwise use the comparison exit code.
+if [[ -n "$BASELINE" && -f "$REPORT_JSON" ]]; then
+  set +e
+  COMPARE_OUTPUT=$(auditai compare \
+    --baseline "$BASELINE" \
+    --current "$REPORT_JSON" \
+    --max-drop "$MAX_DROP" 2>&1)
+  COMPARE_EXIT=$?
+  set -e
+
+  {
+    echo ""
+    echo "## Baseline regression"
+    echo '```text'
+    printf '%s\n' "$COMPARE_OUTPUT"
+    echo '```'
+  } >> "$REPORT_MD"
+
+  if [[ "$EXIT_CODE" -eq 0 && "$COMPARE_EXIT" -ne 0 ]]; then
+    EXIT_CODE=$COMPARE_EXIT
+  fi
 fi
 
 PASSED=false

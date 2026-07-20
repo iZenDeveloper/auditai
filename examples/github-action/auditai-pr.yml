@@ -47,6 +47,9 @@ jobs:
           working-directory: .
           comment-on-pr: "true"
           upload-artifact: "true"
+          # Optional regression gate against a committed known-good report:
+          # baseline: tests/auditai-baseline.json
+          # max-drop: "0.05"
           # install: auditai-cli   # PyPI default; or pin:
           # install: git+https://github.com/iZenDeveloper/auditai.git@v0.1.1
           # fail-on: average

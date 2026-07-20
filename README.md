@@ -228,6 +228,8 @@ jobs:
           config: auditai.yml
           install: auditai-cli    # PyPI (default)
           comment-on-pr: "true"
+          # baseline: tests/auditai-baseline.json
+          # max-drop: "0.05"
 ```
 
 ### Action inputs
@@ -238,6 +240,8 @@ jobs:
 | `working-directory` | `.` | CWD for config/dataset |
 | `fail-on` | _(yaml)_ | `average` \| `any` |
 | `out` | `auditai-out` | Report directory |
+| `baseline` | _(disabled)_ | Known-good JSON report; enables regression gate |
+| `max-drop` | `0.05` | Maximum absolute metric-mean drop from baseline |
 | `install` | `auditai-cli` | Pip target (`auditai-cli`, `.`, git URL) |
 | `comment-on-pr` | `true` | Upsert PR comment with report |
 | `upload-artifact` | `true` | Upload `auditai-out` |
