@@ -7,6 +7,7 @@ All notable changes to AuditAI are documented in this file.
 ### Added
 
 - Guerrilla: LFS-safe clone (`git add -f`, default branch detect, skip git-lfs filters)
+- `auditai compare` regression gate for comparing current metric means with a saved baseline
 
 ### Changed
 

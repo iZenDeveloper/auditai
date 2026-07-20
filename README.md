@@ -152,6 +152,23 @@ See [`examples/rag_demo/auditai.yml`](examples/rag_demo/auditai.yml) for a full 
 
 Reports include **`judge_usage`**: prompt / completion / total tokens (API-reported for openai/xai; estimated for mock).
 
+### Regression gate against a baseline
+
+Keep a known-good JSON report and fail CI if any existing metric mean drops by more
+than the allowed absolute amount:
+
+```bash
+auditai compare \
+  --baseline tests/auditai-baseline.json \
+  --current auditai-out/auditai-report.json \
+  --max-drop 0.05
+```
+
+The command returns `0` when all baseline metrics stay within tolerance, `1` for a
+quality regression (including a baseline metric missing from the current report), and
+`2` for invalid input. New metrics that exist only in the current report do not fail
+the comparison.
+
 Env expansion: `${VAR}` and `${VAR:-default}` in config strings.
 
 ### Judge: OpenAI vs Grok (xAI)

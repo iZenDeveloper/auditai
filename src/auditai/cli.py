@@ -10,6 +10,7 @@ import typer
 from rich.console import Console
 
 from auditai import __version__
+from auditai.compare import compare_report_files
 from auditai.config import config_to_init_yaml, ensure_judge_auth, load_config
 from auditai.dataset import load_dataset
 from auditai.errors import (
@@ -148,6 +149,51 @@ def validate_cmd(
         raise
     except (ConfigError, DatasetError, AuthError) as e:
         console.print(f"[red]invalid:[/red] {e}")
+        raise typer.Exit(EXIT_USER_ERROR) from e
+
+
+@app.command("compare")
+def compare_cmd(
+    baseline: Path = typer.Option(
+        ...,
+        "--baseline",
+        help="Previous auditai-report.json used as the quality baseline",
+    ),
+    current: Path = typer.Option(
+        Path("auditai-out/auditai-report.json"),
+        "--current",
+        help="Current auditai-report.json",
+    ),
+    max_drop: float = typer.Option(
+        0.05,
+        "--max-drop",
+        min=0.0,
+        max=1.0,
+        help="Maximum allowed absolute drop in each metric mean",
+    ),
+) -> None:
+    """Fail CI when metric means regress beyond an allowed drop."""
+    try:
+        result = compare_report_files(baseline, current, max_drop=max_drop)
+        console.print(f"[bold]Regression comparison[/bold] · max drop={max_drop:.4f}")
+        for item in result.comparisons:
+            mark = "[green]PASS[/green]" if item.passed else "[red]FAIL[/red]"
+            current_text = "missing" if item.current is None else f"{item.current:.4f}"
+            drop_text = "n/a" if item.drop is None else f"{item.drop:+.4f}"
+            detail = f" · {item.reason}" if item.reason else ""
+            console.print(
+                f"{mark} {item.name}: baseline={item.baseline:.4f} "
+                f"current={current_text} drop={drop_text}{detail}"
+            )
+        if result.passed:
+            console.print("[green]No metric regression exceeded the allowed drop.[/green]")
+            raise typer.Exit(EXIT_PASS)
+        console.print("[red]Regression gate failed.[/red]")
+        raise typer.Exit(EXIT_AUDIT_FAILED)
+    except typer.Exit:
+        raise
+    except ConfigError as e:
+        console.print(f"[red]error:[/red] {e}")
         raise typer.Exit(EXIT_USER_ERROR) from e
 
 
