@@ -51,5 +51,5 @@ jobs:
           # baseline: tests/auditai-baseline.json
           # max-drop: "0.05"
           # install: auditai-cli   # PyPI default; or pin:
-          # install: git+https://github.com/iZenDeveloper/auditai.git@v0.1.1
+          # install: git+https://github.com/iZenDeveloper/auditai.git@v0.1.2
           # fail-on: average

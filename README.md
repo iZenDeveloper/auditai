@@ -72,13 +72,13 @@ Want a similar scaffold on another public RAG repo? See [docs/gtm/GROWTH_HACK.md
 python -m venv .venv && source .venv/bin/activate
 pip install auditai-cli
 # or: pip install "auditai-cli[pdf]"
-auditai --version   # → 0.1.1
+auditai --version   # → 0.1.2
 ```
 
 **Pin from GitHub (optional):**
 
 ```bash
-pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
+pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.2"
 ```
 
 **Contributors (from source):**

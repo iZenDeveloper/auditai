@@ -145,7 +145,7 @@ class AuditConfig(BaseModel):
 
     @model_validator(mode="after")
     def check_version_and_metrics(self) -> AuditConfig:
-        if self.version not in {"0.1", "0.1.0", "0.1.1"}:
+        if self.version not in {"0.1", "0.1.0", "0.1.1", "0.1.2"}:
             raise ValueError(f"unsupported config version: {self.version}")
         enabled = [
             self.metrics.faithfulness.enabled,

@@ -3,7 +3,7 @@
 **Package name on PyPI:** `auditai-cli`  
 **Why not `auditai`?** Upload rejected (400): too similar to existing **`audit-ai`** (PyPI normalizes hyphens).  
 **Import / CLI:** still `import auditai` and command `auditai`.  
-**Current version:** `0.1.1` (matches GitHub release tag `v0.1.1`).
+**Current version:** `0.1.2` (matches GitHub release tag `v0.1.2`).
 
 ---
 
@@ -16,7 +16,7 @@ rm -rf dist && uv build   # or: python -m build
 # smoke:
 python -m venv /tmp/auditai-pypi-smoke && \
   /tmp/auditai-pypi-smoke/bin/pip install dist/auditai-*.whl && \
-  /tmp/auditai-pypi-smoke/bin/auditai --version   # → 0.1.1
+  /tmp/auditai-pypi-smoke/bin/auditai --version   # → 0.1.2
 ```
 
 ---
@@ -40,8 +40,8 @@ python -m venv /tmp/auditai-pypi-smoke && \
 # Option 1 — manual
 gh workflow run publish-pypi.yml
 
-# Option 2 — re-push existing tag (only if needed)
-git push origin v0.1.1 --force   # avoid force if tag already good; use workflow_dispatch instead
+# Option 2 — push a new release tag
+git push origin v0.1.2
 ```
 
 ### B) API token (fast first upload)

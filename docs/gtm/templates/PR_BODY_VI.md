@@ -32,7 +32,7 @@ Từ nay mỗi lần bạn (hoặc CI) chạy workflow, pipeline sẽ tự test 
 
 ```bash
 pip install auditai-cli
-# fallback: pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1"
+# fallback: pip install "git+https://github.com/iZenDeveloper/auditai.git@v0.1.2"
 export OPENAI_API_KEY=...   # hoặc XAI_API_KEY + judge.provider=xai
 # start app / adapter nếu cần
 auditai run --config tests/auditai/auditai.yml

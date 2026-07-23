@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 # PyPI rejects bare "auditai" as too similar to existing "audit-ai".
 # Import path and console script remain `auditai`.
 name = "auditai-cli"
-version = "0.1.1"
+version = "0.1.2"
 description = "Developer-first LLM/RAG safety audits for CI/CD (AuditAI CLI)"
 readme = "README.md"
 license = "MIT"

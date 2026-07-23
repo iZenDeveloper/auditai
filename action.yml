@@ -42,7 +42,7 @@ inputs:
   install:
     description: >
       Pip install target for AuditAI. Use "auditai-cli" for PyPI, or a path/URL
-      (e.g. "." or "git+https://github.com/iZenDeveloper/auditai.git@v0.1.1").
+      (e.g. "." or "git+https://github.com/iZenDeveloper/auditai.git@v0.1.2").
     required: false
     default: auditai-cli
   comment-on-pr:

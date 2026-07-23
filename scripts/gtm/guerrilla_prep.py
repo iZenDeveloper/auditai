@@ -419,7 +419,7 @@ def write_workflow(path: Path) -> None:
                   #     XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
                   #   with:
                   #     config: tests/auditai/auditai.yml
-                  #     install: git+https://github.com/iZenDeveloper/auditai.git@v0.1.1
+                  #     install: git+https://github.com/iZenDeveloper/auditai.git@v0.1.2
             """
         ),
         encoding="utf-8",

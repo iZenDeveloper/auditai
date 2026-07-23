@@ -4,6 +4,8 @@ All notable changes to AuditAI are documented in this file.
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-07-23
+
 ### Added
 
 - Guerrilla: LFS-safe clone (`git add -f`, default branch detect, skip git-lfs filters)
