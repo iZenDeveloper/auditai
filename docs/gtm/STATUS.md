@@ -1,7 +1,7 @@
 # GTM / project status — AuditAI
 
-**Snapshot:** 2026-07-21 (#25 + #26 both MERGED)
-**Last synced:** 2026-07-21
+**Snapshot:** 2026-07-23 (#25 + #26 both MERGED; v0.1.2 released)
+**Last synced:** 2026-07-23
 **Owner account:** [iZenDeveloper](https://github.com/iZenDeveloper)  
 **Product repo:** https://github.com/iZenDeveloper/auditai  
 
@@ -16,13 +16,13 @@ Machine log: [`out/pr_log.jsonl`](./out/pr_log.jsonl) (gitignored under `out/`).
 |------|--------|
 | Public repo | https://github.com/iZenDeveloper/auditai |
 | Stars / forks | **0 / 0** |
-| Releases | **v0.1.0**, **v0.1.1** (latest); floating tag `v0.1` → v0.1.1 |
-| CLI | `auditai run` / `validate` / `init` / `report --pdf` |
+| Releases | **v0.1.0**, **v0.1.1**, **v0.1.2** (latest); floating tag `v0.1` → v0.1.2 |
+| CLI | `auditai run` / `validate` / `init` / `compare` / `baseline` / `report --pdf` |
 | Judge BYOK | `openai` · `xai` (Grok) · `mock` |
 | Reports | JSON / Markdown / terminal · **`judge_usage`** tokens |
 | GitHub Action | `iZenDeveloper/auditai@v0.1` |
 | Cloud API + dashboard | Stub present (not GTM-critical yet) |
-| Tests | **34+** unit (incl. GTM helpers) |
+| Tests | **44** passing (CLI, regression, Action runner, GTM helpers) |
 
 Install:
 
@@ -68,7 +68,7 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | #26 | **MERGED** 2026-07-18T01:40:53Z | — |
 | Human maintainer replies | **3** (qtuanph · TubeNote · viparse) | ≥3 ✓ |
 | AuditAI stars | **0** | after badge / social proof |
-| PyPI | **`auditai-cli` 0.1.1** live | ✓ |
+| PyPI | **`auditai-cli` 0.1.2** live | ✓ |
 | Follow-ups | older set 2nd soft FU ×3 · 07-16 batch first soft FU ×3 on 07-21 | max 3/day |
 
 **Milestone:** **two merges** on chatbot-rag (#25 + #26) · PyPI `auditai-cli` live · champion maintainer qtuanph.
@@ -142,5 +142,6 @@ pip install auditai-cli                # PyPI package name (CLI still: auditai)
 | 2026-07-18 | GitHub About + topics set (PyPI homepage) |
 | 2026-07-18 | HANDOFF_CODEX.md + AGENTS.md for next agent |
 | 2026-07-21 | Live sync: TubeNote still OPEN; no badge reply on #26; banhmi #1 CLOSED; first soft FU sent to FPTU #1, local-rag-pdf #1, HiTrong #1 |
+| 2026-07-23 | Released `auditai-cli==0.1.2`: baseline regression CLI + Action integration; `v0.1` moved to v0.1.2 |
 
 *Refresh with `gh pr view` / search before major decisions.*

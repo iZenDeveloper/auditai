@@ -5,6 +5,11 @@
 **Import / CLI:** still `import auditai` and command `auditai`.  
 **Current version:** `0.1.2` (matches GitHub release tag `v0.1.2`).
 
+> Release note (2026-07-23): OIDC returned `invalid-publisher`; v0.1.2 was
+> published with the local scoped token. Configure the PyPI Trusted Publisher
+> for repository `iZenDeveloper/auditai`, workflow `publish-pypi.yml`, environment
+> `pypi` before relying on tokenless publication.
+
 ---
 
 ## 0. Pre-flight (done locally)
